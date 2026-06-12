@@ -6,10 +6,16 @@
 <title>JISOO AI — Executive Intelligence Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="config.js"></script>
 <style>
+/* ===== 明朝体ユーティリティ ===== */
+.mincho{
+  font-family:'Shippori Mincho','游明朝',YuMincho,'Hiragino Mincho ProN',serif;
+  letter-spacing:.04em;line-height:1.85;
+}
+
 /* ===== リセット・基本 ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -194,16 +200,23 @@ body::after{
   border-radius:var(--radius);padding:28px;margin-bottom:28px;
 }
 .atlas-header{display:flex;align-items:center;gap:18px;margin-bottom:22px}
-/* ATLASアバター（脈動する光る球体） */
+/* ATLASアバター（SVGヒーロー顔） */
 .atlas-orb{
-  width:52px;height:52px;flex-shrink:0;border-radius:50%;
-  background:radial-gradient(circle at 38% 36%,#fff 0%,var(--cyan) 28%,var(--violet) 70%,#0A0E17 100%);
-  box-shadow:0 0 18px rgba(56,189,248,.6),0 0 36px rgba(139,92,246,.35);
-  animation:orb-pulse 2.4s ease-in-out infinite;
+  width:80px;height:80px;flex-shrink:0;
+  animation:atlas-float 3.6s ease-in-out infinite;
+  filter:drop-shadow(0 0 10px rgba(56,189,248,.5)) drop-shadow(0 0 22px rgba(139,92,246,.3));
 }
-@keyframes orb-pulse{
-  0%,100%{box-shadow:0 0 18px rgba(56,189,248,.6),0 0 36px rgba(139,92,246,.35)}
-  50%{box-shadow:0 0 30px rgba(56,189,248,.9),0 0 60px rgba(139,92,246,.5)}
+@keyframes atlas-float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+@keyframes eye-glow{
+  0%,100%{opacity:1}
+  50%{opacity:.35}
+}
+@keyframes core-pulse{
+  0%,100%{opacity:.9}
+  50%{opacity:.4}
 }
 .atlas-title .name{
   font-size:18px;font-weight:800;letter-spacing:.06em;
@@ -406,7 +419,7 @@ body::after{
 <body>
 
 <!-- DEMOバッジ -->
-<div id="demoBadge">DEMO DATA</div>
+<div id="demoBadge">DEMO DATA <span class="mincho" style="font-size:10px;font-weight:500;letter-spacing:.04em">デモ（架空の数字）</span></div>
 
 <!-- トースト -->
 <div class="toast" id="toast"></div>
@@ -416,7 +429,7 @@ body::after{
   <div class="login-card">
     <div class="login-logo">
       <h1>JISOO AI</h1>
-      <p>Executive Intelligence Dashboard</p>
+      <p class="mincho" style="font-size:13px;color:var(--text-muted);margin-top:6px;letter-spacing:.08em">AI経営参謀ダッシュボード</p>
     </div>
     <div class="form-group">
       <label for="le">Email Address</label>
@@ -445,7 +458,7 @@ body::after{
   <div class="main">
 
     <!-- サマリーカード -->
-    <div class="section-title">Monthly Summary</div>
+    <div class="section-title">MONTHLY SUMMARY <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(56,189,248,.7)">月次サマリー</span></div>
     <div class="summary-grid">
       <div class="summary-card" id="sc0">
         <div class="micro-label">Monthly Revenue</div>
@@ -476,41 +489,93 @@ body::after{
     </div>
 
     <!-- ATLASゾーン -->
-    <div class="section-title">AI Executive Briefing</div>
+    <div class="section-title">AI EXECUTIVE BRIEFING <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(56,189,248,.7)">AI経営ブリーフィング</span></div>
     <div class="atlas-zone">
       <div class="atlas-header">
-        <div class="atlas-orb"></div>
+        <!-- SVGヒーローアーマー顔アバター -->
+        <div class="atlas-orb">
+          <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="faceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1a1060"/>
+                <stop offset="100%" stop-color="#2d1a6e"/>
+              </linearGradient>
+              <linearGradient id="plateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#252080"/>
+                <stop offset="100%" stop-color="#130d40"/>
+              </linearGradient>
+              <filter id="eyeGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="coreGlow" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <!-- 外縁ネオン縁取り -->
+            <ellipse cx="40" cy="42" rx="31" ry="34" fill="none" stroke="#38BDF8" stroke-width="1.5" opacity=".7"/>
+            <!-- メインフェイスプレート -->
+            <ellipse cx="40" cy="42" rx="29" ry="32" fill="url(#faceGrad)"/>
+            <!-- 額パネル（上部） -->
+            <path d="M18 30 Q40 16 62 30 L58 42 Q40 34 22 42Z" fill="url(#plateGrad)" opacity=".9"/>
+            <!-- チークパネル左 -->
+            <path d="M14 44 L22 38 L24 62 L14 58Z" fill="#1a1060" opacity=".85"/>
+            <!-- チークパネル右 -->
+            <path d="M66 44 L58 38 L56 62 L66 58Z" fill="#1a1060" opacity=".85"/>
+            <!-- 顎パネル -->
+            <path d="M24 64 Q40 76 56 64 L54 58 Q40 68 26 58Z" fill="#1a1060" opacity=".8"/>
+            <!-- 眉ライン左 -->
+            <line x1="22" y1="35" x2="38" y2="33" stroke="#38BDF8" stroke-width="1.2" opacity=".5"/>
+            <!-- 眉ライン右 -->
+            <line x1="42" y1="33" x2="58" y2="35" stroke="#38BDF8" stroke-width="1.2" opacity=".5"/>
+            <!-- 目スリット左（シアン・グロー付き） -->
+            <rect x="21" y="43" width="16" height="4" rx="2" fill="#38BDF8" filter="url(#eyeGlow)" style="animation:eye-glow 2.2s ease-in-out infinite"/>
+            <!-- 目スリット右 -->
+            <rect x="43" y="43" width="16" height="4" rx="2" fill="#38BDF8" filter="url(#eyeGlow)" style="animation:eye-glow 2.2s ease-in-out infinite"/>
+            <!-- 鼻筋ライン -->
+            <line x1="40" y1="50" x2="40" y2="60" stroke="#38BDF8" stroke-width=".8" opacity=".25"/>
+            <!-- 口パネル -->
+            <rect x="29" y="62" width="22" height="3" rx="1.5" fill="#38BDF8" opacity=".2"/>
+            <!-- 額コア（紫） -->
+            <circle cx="40" cy="26" r="4" fill="#8B5CF6" filter="url(#coreGlow)" style="animation:core-pulse 2.8s ease-in-out infinite"/>
+            <circle cx="40" cy="26" r="2" fill="#c084fc"/>
+            <!-- パネル区切りライン -->
+            <line x1="22" y1="57" x2="58" y2="57" stroke="#38BDF8" stroke-width=".7" opacity=".3"/>
+            <line x1="14" y1="44" x2="66" y2="44" stroke="#38BDF8" stroke-width=".5" opacity=".2"/>
+          </svg>
+        </div>
         <div class="atlas-title">
           <div class="name">ATLAS</div>
-          <div class="subtitle">AI Executive Advisor — A.T.L.A.S.</div>
+          <div class="subtitle mincho" style="font-size:12px;margin-top:4px;color:rgba(148,163,184,.85)">AI経営参謀 アトラス</div>
         </div>
         <button class="regen-btn" onclick="regenComments()" style="margin-left:auto">ATLASに再分析させる</button>
       </div>
       <!-- 月次コメント吹き出し -->
-      <div class="atlas-bubble" id="aiComment">
+      <div class="atlas-bubble mincho" id="aiComment">
         <span class="preparing">ATLASが分析を準備しています<span class="dots-anim"></span></span>
       </div>
       <!-- M&AWatchとForecast -->
       <div class="atlas-sub-grid">
         <div class="atlas-sub-panel">
-          <div class="micro-label">M&amp;A Watch</div>
-          <div class="body" id="aiMaWatch"><span class="preparing">準備中…</span></div>
+          <div class="micro-label">M&amp;A WATCH <span class="mincho" style="font-size:10px;letter-spacing:.04em;text-transform:none;color:rgba(139,92,246,.7)">M&amp;A観察</span></div>
+          <div class="body mincho" id="aiMaWatch"><span class="preparing">準備中…</span></div>
         </div>
         <div class="atlas-sub-panel">
-          <div class="micro-label">Forecast</div>
+          <div class="micro-label">FORECAST <span class="mincho" style="font-size:10px;letter-spacing:.04em;text-transform:none;color:rgba(139,92,246,.7)">目標到達予測</span></div>
           <div class="body" id="aiForecast"><span class="preparing">計算中…</span></div>
         </div>
       </div>
     </div>
 
     <!-- 利益グラフ -->
-    <div class="section-title">Profit Trend</div>
+    <div class="section-title">PROFIT TREND <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(56,189,248,.7)">利益の推移</span></div>
     <div class="chart-card">
       <canvas id="profitChart"></canvas>
     </div>
 
     <!-- 月次一覧表 -->
-    <div class="section-title">Monthly Overview</div>
+    <div class="section-title">MONTHLY OVERVIEW <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(56,189,248,.7)">月次一覧</span></div>
     <div class="table-wrap">
       <table class="metrics-table" id="metricsTable">
         <thead id="metricsHead"></thead>
@@ -923,65 +988,147 @@ function regenComments(){
   }).catch(function(){ commentEl.innerHTML='<span class="preparing">通信エラーが発生しました。</span>'; });
 }
 
-/* ===== グラフ描画（ネオンシアン折れ線） ===== */
+/* ===== グラフ描画（複合チャート：棒2本＋グロー折れ線） ===== */
 var profitChartInst = null;
+
+/* 値ラベルを棒・点の上に描くカスタムプラグイン */
+var valueLabelPlugin = {
+  id: "valueLabelPlugin",
+  afterDatasetsDraw: function(chart){
+    var ctx2 = chart.ctx;
+    chart.data.datasets.forEach(function(ds, dsIdx){
+      var meta = chart.getDatasetMeta(dsIdx);
+      if(meta.hidden) return;
+      meta.data.forEach(function(el, idx){
+        var val = ds.data[idx];
+        if(val == null) return;
+        var man = (val / 10000).toFixed(1);
+        ctx2.save();
+        ctx2.font = "600 11px Inter,sans-serif";
+        ctx2.fillStyle = ds.borderColor || "#fff";
+        ctx2.textAlign = "center";
+        ctx2.textBaseline = "bottom";
+        var x = el.x, y = el.y - 4;
+        ctx2.fillText(man+"万", x, y);
+        ctx2.restore();
+      });
+    });
+  }
+};
+Chart.register(valueLabelPlugin);
+
 function renderChart(){
   var sorted = ALL_METRICS.slice().sort(function(a,b){ return a.year_month>b.year_month?1:-1; });
-  var labels=[], data=[];
+  var labels=[], billingData=[], paymentData=[], profitData=[];
   sorted.forEach(function(m){
-    if(m.payment!=null&&m.expense!=null){
-      labels.push(m.year_month.replace("-","年")+"月");
-      data.push(Number(m.payment)-Number(m.expense));
-    }
+    var lbl = m.year_month.replace("-","年")+"月";
+    labels.push(lbl);
+    billingData.push(m.billing!=null ? Number(m.billing) : null);
+    paymentData.push(m.payment!=null ? Number(m.payment) : null);
+    profitData.push((m.payment!=null&&m.expense!=null) ? Number(m.payment)-Number(m.expense) : null);
   });
+
   var ctx=document.getElementById("profitChart").getContext("2d");
   if(profitChartInst){ profitChartInst.destroy(); }
 
-  /* グラデーション塗り */
-  var grad = ctx.createLinearGradient(0,0,0,240);
-  grad.addColorStop(0,"rgba(56,189,248,.35)");
-  grad.addColorStop(1,"rgba(56,189,248,.02)");
+  /* 棒グラデーション：シアン系 */
+  var gradBilling = ctx.createLinearGradient(0,0,0,240);
+  gradBilling.addColorStop(0,"rgba(56,189,248,.55)");
+  gradBilling.addColorStop(1,"rgba(56,189,248,.08)");
+  /* 棒グラデーション：紫系 */
+  var gradPayment = ctx.createLinearGradient(0,0,0,240);
+  gradPayment.addColorStop(0,"rgba(139,92,246,.55)");
+  gradPayment.addColorStop(1,"rgba(139,92,246,.08)");
 
-  profitChartInst=new Chart(ctx,{
-    type:"line",
+  profitChartInst = new Chart(ctx, {
     data:{
-      labels:labels,
-      datasets:[{
-        label:"利益（円）",data:data,
-        borderColor:"#38BDF8",
-        backgroundColor:grad,
-        borderWidth:2.5,
-        pointBackgroundColor:"#38BDF8",
-        pointBorderColor:"#0A0E17",
-        pointBorderWidth:2,
-        pointRadius:5,
-        tension:.35,fill:true
-      }]
+      labels: labels,
+      datasets:[
+        {
+          type:"bar",
+          label:"請求額",
+          data: billingData,
+          backgroundColor: gradBilling,
+          borderColor: "rgba(56,189,248,.8)",
+          borderWidth: 1.5,
+          borderRadius: 5,
+          order: 2
+        },
+        {
+          type:"bar",
+          label:"入金額",
+          data: paymentData,
+          backgroundColor: gradPayment,
+          borderColor: "rgba(139,92,246,.8)",
+          borderWidth: 1.5,
+          borderRadius: 5,
+          order: 3
+        },
+        {
+          type:"line",
+          label:"利益",
+          data: profitData,
+          borderColor: "#38BDF8",
+          backgroundColor: "transparent",
+          borderWidth: 2.5,
+          pointBackgroundColor: "#fff",
+          pointBorderColor: "#38BDF8",
+          pointBorderWidth: 2,
+          pointRadius: 6,
+          tension: .35,
+          order: 1
+        }
+      ]
     },
     options:{
-      responsive:true,
-      animation:{duration:800},
+      responsive: true,
+      layout:{ padding:{ top:22 } },
+      interaction:{ mode:"index", intersect:false },
+      animation:{
+        duration: 900,
+        easing: "easeOutQuart",
+        delay: function(c){
+          if(c.type !== "data") return 0;
+          return (c.dataIndex||0) * 70 + (c.datasetIndex||0) * 150;
+        }
+      },
       plugins:{
-        legend:{display:false},
+        legend:{
+          display: true,
+          labels:{
+            color: "#94A3B8",
+            font:{ family:"'Shippori Mincho',serif", size:12 },
+            usePointStyle: true,
+            pointStyleWidth: 10
+          }
+        },
         tooltip:{
           backgroundColor:"rgba(17,26,46,.95)",
           borderColor:"rgba(56,189,248,.3)",
           borderWidth:1,
           titleColor:"#38BDF8",
           bodyColor:"#E2E8F0",
-          callbacks:{label:function(ctx){ return "  "+ctx.parsed.y.toLocaleString("ja-JP")+"円"; }}
+          callbacks:{
+            label:function(c){
+              var v = c.parsed.y;
+              if(v==null) return "";
+              var man = (v/10000).toFixed(1);
+              return "  "+c.dataset.label+": "+man+"万円";
+            }
+          }
         }
       },
       scales:{
         y:{
-          ticks:{color:"#64748B",callback:function(v){ return v.toLocaleString("ja-JP"); }},
-          grid:{color:"rgba(255,255,255,.06)"},
-          border:{color:"rgba(255,255,255,.06)"}
+          title:{ display:true, text:"万円", color:"#64748B", font:{size:11} },
+          ticks:{ color:"#64748B", callback:function(v){ return (v/10000).toFixed(0)+"万"; } },
+          grid:{ color:"rgba(255,255,255,.05)" },
+          border:{ color:"rgba(255,255,255,.05)" }
         },
         x:{
-          ticks:{color:"#64748B"},
-          grid:{display:false},
-          border:{color:"rgba(255,255,255,.06)"}
+          ticks:{ color:"#64748B" },
+          grid:{ display:false },
+          border:{ color:"rgba(255,255,255,.05)" }
         }
       }
     }
