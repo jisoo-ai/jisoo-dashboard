@@ -3,234 +3,427 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JISOO AI 経営ダッシュボード</title>
+<title>JISOO AI — Executive Intelligence Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="config.js"></script>
 <style>
 /* ===== リセット・基本 ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f2;color:#1a1a1a;font-size:15px;line-height:1.6}
+:root{
+  --bg:#0A0E17;
+  --card:#111A2E;
+  --card-border:rgba(124,140,255,.18);
+  --cyan:#38BDF8;
+  --violet:#8B5CF6;
+  --cyan-dim:rgba(56,189,248,.12);
+  --violet-dim:rgba(139,92,246,.12);
+  --text:#E2E8F0;
+  --text-muted:#64748B;
+  --text-dim:#94A3B8;
+  --red:#F87171;
+  --radius:14px;
+  --grad:linear-gradient(135deg,var(--cyan),var(--violet));
+  --glow-cyan:0 0 18px rgba(56,189,248,.35);
+  --glow-violet:0 0 18px rgba(139,92,246,.35);
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;
+  min-height:100vh;
+}
 button{cursor:pointer;font-family:inherit;font-size:inherit}
 
-/* ===== アクセントカラー ===== */
-:root{
-  --green:#0F6E56;
-  --green-light:#e8f5f1;
-  --green-mid:#1a8a6c;
-  --border:#e0e0d8;
-  --card-bg:#ffffff;
-  --text-muted:#6b6b6b;
-  --radius:12px;
-  --shadow:0 1px 4px rgba(0,0,0,.07);
+/* ===== 背景の光る玉 ===== */
+body::before,body::after{
+  content:"";position:fixed;border-radius:50%;pointer-events:none;z-index:0;
+  filter:blur(90px);opacity:.18;
+}
+body::before{
+  width:520px;height:520px;
+  background:radial-gradient(circle,var(--cyan) 0%,transparent 70%);
+  top:-120px;left:-120px;
+}
+body::after{
+  width:600px;height:600px;
+  background:radial-gradient(circle,var(--violet) 0%,transparent 70%);
+  bottom:-160px;right:-160px;
 }
 
-/* ===== レイアウト ===== */
-.view{display:none}
+/* ===== ビュー共通 ===== */
+.view{display:none;position:relative;z-index:1}
 .view.active{display:block}
 
-/* ===== ログインビュー ===== */
-#loginView{
-  min-height:100vh;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,#f0f7f4 0%,#e8efe8 100%);
+/* ===== DEMOバッジ ===== */
+#demoBadge{
+  display:none;position:fixed;top:12px;right:12px;z-index:999;
+  background:linear-gradient(90deg,var(--cyan),var(--violet));
+  color:#0A0E17;font-size:11px;font-weight:800;letter-spacing:.18em;
+  padding:4px 12px;border-radius:20px;
 }
+
+/* ===== ログインビュー ===== */
+#loginView{min-height:100vh;align-items:center;justify-content:center}
 #loginView.active{display:flex}
 .login-card{
-  background:var(--card-bg);border-radius:var(--radius);box-shadow:0 4px 24px rgba(0,0,0,.10);
-  padding:40px 36px;width:100%;max-width:380px;
+  background:rgba(17,26,46,.85);backdrop-filter:blur(20px);
+  border:1px solid var(--card-border);border-radius:20px;
+  box-shadow:0 8px 48px rgba(0,0,0,.5);
+  padding:44px 40px;width:100%;max-width:400px;
 }
-.login-logo{text-align:center;margin-bottom:28px}
-.login-logo h1{font-size:20px;font-weight:700;color:var(--green);letter-spacing:.04em}
-.login-logo p{font-size:12px;color:var(--text-muted);margin-top:4px}
-.form-group{margin-bottom:16px}
-.form-group label{display:block;font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:6px}
+.login-logo{text-align:center;margin-bottom:32px}
+.login-logo h1{
+  font-size:26px;font-weight:800;letter-spacing:.04em;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.login-logo p{font-size:12px;color:var(--text-muted);margin-top:6px;letter-spacing:.12em;text-transform:uppercase}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:7px;letter-spacing:.06em;text-transform:uppercase}
 .form-group input{
-  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
-  font-size:15px;outline:none;transition:border-color .2s;
+  width:100%;padding:11px 14px;
+  background:rgba(255,255,255,.04);
+  border:1.5px solid rgba(124,140,255,.25);border-radius:10px;
+  font-size:15px;color:var(--text);outline:none;
+  transition:border-color .2s,box-shadow .2s;
 }
-.form-group input:focus{border-color:var(--green)}
+.form-group input:focus{
+  border-color:var(--cyan);
+  box-shadow:0 0 0 3px rgba(56,189,248,.18);
+}
+.form-group input::placeholder{color:var(--text-muted)}
 .btn-primary{
-  width:100%;padding:11px;background:var(--green);color:#fff;border:none;
-  border-radius:8px;font-size:15px;font-weight:600;letter-spacing:.02em;
-  transition:background .2s;margin-top:8px;
+  width:100%;padding:12px;
+  background:var(--grad);color:#fff;border:none;
+  border-radius:10px;font-size:15px;font-weight:700;letter-spacing:.04em;
+  transition:opacity .2s,transform .1s;margin-top:8px;
 }
-.btn-primary:hover{background:var(--green-mid)}
-.login-err{color:#c0392b;font-size:13px;margin-top:8px;min-height:18px;text-align:center}
+.btn-primary:hover{opacity:.88;transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.login-err{color:var(--red);font-size:13px;margin-top:10px;min-height:18px;text-align:center}
 
 /* ===== ダッシュボードヘッダー ===== */
-#dashView{padding-bottom:40px}
+#dashView{padding-bottom:48px}
 .hdr{
-  background:var(--card-bg);border-bottom:1px solid var(--border);
-  padding:12px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:100;
+  background:rgba(10,14,23,.9);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--card-border);
+  padding:13px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  position:sticky;top:0;z-index:100;
 }
-.hdr h1{font-size:16px;font-weight:700;color:var(--green);flex:1;min-width:180px}
+.hdr-logo{
+  font-size:15px;font-weight:800;letter-spacing:.06em;flex:1;min-width:160px;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
 .hdr-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .month-sel{
-  padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;
-  font-size:14px;background:#fff;color:#1a1a1a;outline:none;
+  padding:6px 11px;
+  background:rgba(255,255,255,.05);
+  border:1.5px solid var(--card-border);border-radius:8px;
+  font-size:13px;color:var(--text);outline:none;
+  font-family:inherit;
 }
+.month-sel option{background:#111A2E;color:var(--text)}
 .btn-sm{
-  padding:6px 14px;border:1.5px solid var(--green);border-radius:8px;
-  font-size:13px;font-weight:600;color:var(--green);background:transparent;
-  transition:all .2s;white-space:nowrap;
+  padding:6px 14px;border:1.5px solid var(--cyan);border-radius:8px;
+  font-size:12px;font-weight:600;color:var(--cyan);background:transparent;
+  transition:all .2s;white-space:nowrap;letter-spacing:.02em;
 }
-.btn-sm:hover{background:var(--green);color:#fff}
-.btn-sm.outline-red{border-color:#c0392b;color:#c0392b}
-.btn-sm.outline-red:hover{background:#c0392b;color:#fff}
-.btn-sm.filled{background:var(--green);color:#fff}
-.btn-sm.filled:hover{background:var(--green-mid)}
+.btn-sm:hover{background:var(--cyan);color:#0A0E17}
+.btn-sm.outline-red{border-color:var(--red);color:var(--red)}
+.btn-sm.outline-red:hover{background:var(--red);color:#0A0E17}
+.btn-sm.filled{background:var(--grad);border-color:transparent;color:#fff}
+.btn-sm.filled:hover{opacity:.85}
 
 /* ===== コンテンツエリア ===== */
-.main{max-width:1100px;margin:0 auto;padding:20px 16px}
-
-/* ===== サマリーカード ===== */
-.summary-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:24px;
-}
-.summary-card{
-  background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);
-  padding:20px 22px;
-}
-.summary-card .label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em}
-.summary-card .value{font-size:28px;font-weight:700;color:var(--green);margin:6px 0 4px}
-.summary-card .sub{font-size:12px;color:var(--text-muted)}
-.summary-card .progress-bar{
-  height:4px;background:#eee;border-radius:2px;margin-top:10px;overflow:hidden;
-}
-.summary-card .progress-fill{height:100%;background:var(--green);border-radius:2px;transition:width .5s}
+.main{max-width:1120px;margin:0 auto;padding:24px 18px}
 
 /* ===== セクションタイトル ===== */
-.section-title{font-size:14px;font-weight:700;color:var(--text-muted);margin:28px 0 12px;text-transform:uppercase;letter-spacing:.06em}
+.section-title{
+  font-size:11px;font-weight:700;color:var(--cyan);
+  text-transform:uppercase;letter-spacing:.18em;
+  margin:32px 0 14px;
+}
 
-/* ===== AIカード ===== */
-.ai-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:24px}
-.ai-card{
-  background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);
-  padding:20px 22px;border-top:3px solid var(--green);
+/* ===== カード共通 ===== */
+.card{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:20px 22px;
+  transition:box-shadow .25s;
 }
-.ai-card .ai-label{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.ai-card .ai-body{font-size:14px;color:#2a2a2a;line-height:1.7;white-space:pre-wrap;word-break:break-all}
-.ai-card .ai-note{font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic}
-.ai-card .badge{
-  display:inline-block;padding:3px 10px;border-radius:20px;
-  background:var(--green-light);color:var(--green);font-weight:700;font-size:14px;margin-bottom:6px;
+.card:hover{box-shadow:0 0 24px rgba(56,189,248,.12)}
+
+/* ===== サマリーグリッド ===== */
+.summary-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;margin-bottom:28px;
 }
-.ai-card .regen-btn{
-  margin-top:10px;padding:5px 12px;border:1.5px solid var(--green);border-radius:6px;
-  font-size:12px;font-weight:600;color:var(--green);background:transparent;cursor:pointer;
+.summary-card{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:20px 22px;
+  transition:box-shadow .25s;opacity:0;transform:translateY(14px);
 }
-.ai-card .regen-btn:hover{background:var(--green);color:#fff}
-.ai-card .preparing{color:var(--text-muted);font-size:13px}
+.summary-card.visible{opacity:1;transform:translateY(0);transition:opacity .4s ease,transform .4s ease,box-shadow .25s}
+.summary-card:hover{box-shadow:0 0 24px rgba(56,189,248,.12)}
+.summary-card .micro-label{
+  font-size:11px;font-weight:700;color:var(--cyan);
+  text-transform:uppercase;letter-spacing:.18em;margin-bottom:2px;
+}
+.summary-card .label{font-size:12px;color:var(--text-muted);margin-bottom:8px}
+.summary-card .value{
+  font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:4px;
+}
+.summary-card .sub{font-size:12px;color:var(--text-muted)}
+.summary-card .progress-bar{
+  height:5px;background:rgba(255,255,255,.07);border-radius:3px;margin-top:12px;overflow:hidden;
+}
+.summary-card .progress-fill{
+  height:100%;width:0%;border-radius:3px;
+  background:var(--grad);
+  transition:width .9s cubic-bezier(.16,1,.3,1);
+}
+
+/* ===== ATLASゾーン ===== */
+.atlas-zone{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:28px;margin-bottom:28px;
+}
+.atlas-header{display:flex;align-items:center;gap:18px;margin-bottom:22px}
+/* ATLASアバター（脈動する光る球体） */
+.atlas-orb{
+  width:52px;height:52px;flex-shrink:0;border-radius:50%;
+  background:radial-gradient(circle at 38% 36%,#fff 0%,var(--cyan) 28%,var(--violet) 70%,#0A0E17 100%);
+  box-shadow:0 0 18px rgba(56,189,248,.6),0 0 36px rgba(139,92,246,.35);
+  animation:orb-pulse 2.4s ease-in-out infinite;
+}
+@keyframes orb-pulse{
+  0%,100%{box-shadow:0 0 18px rgba(56,189,248,.6),0 0 36px rgba(139,92,246,.35)}
+  50%{box-shadow:0 0 30px rgba(56,189,248,.9),0 0 60px rgba(139,92,246,.5)}
+}
+.atlas-title .name{
+  font-size:18px;font-weight:800;letter-spacing:.06em;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.atlas-title .subtitle{font-size:11px;color:var(--text-muted);letter-spacing:.08em;margin-top:2px}
+/* ATLASコメント吹き出し */
+.atlas-bubble{
+  background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.2);
+  border-radius:12px;padding:16px 18px;margin-bottom:16px;
+  font-size:14px;color:var(--text);line-height:1.8;min-height:60px;
+  white-space:pre-wrap;word-break:break-all;
+}
+.atlas-bubble .preparing-dots{color:var(--cyan)}
+.atlas-sub-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.atlas-sub-panel{
+  background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.2);
+  border-radius:10px;padding:14px 16px;
+}
+.atlas-sub-panel .micro-label{
+  font-size:11px;font-weight:700;color:var(--violet);
+  text-transform:uppercase;letter-spacing:.18em;margin-bottom:6px;
+}
+.atlas-sub-panel .body{font-size:13px;color:var(--text-dim);line-height:1.7;white-space:pre-wrap;word-break:break-all}
+.regen-btn{
+  padding:6px 14px;border:1.5px solid var(--cyan);border-radius:8px;
+  font-size:12px;font-weight:600;color:var(--cyan);background:transparent;
+  transition:all .2s;
+}
+.regen-btn:hover{background:var(--cyan);color:#0A0E17}
+/* FORECASTバッジ */
+.badge{
+  display:inline-block;padding:4px 12px;border-radius:20px;
+  border:1px solid rgba(56,189,248,.4);color:var(--cyan);
+  font-weight:700;font-size:13px;margin-bottom:6px;margin-right:6px;
+  background:rgba(56,189,248,.08);
+}
+.ai-note{font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic}
+.preparing{color:var(--text-muted);font-size:13px}
 
 /* ===== グラフ ===== */
 .chart-card{
-  background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);
-  padding:20px 22px;margin-bottom:24px;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:22px 24px;margin-bottom:28px;
 }
 .chart-card canvas{max-height:260px}
 
 /* ===== 月次一覧表 ===== */
-.table-wrap{overflow-x:auto;margin-bottom:24px}
+.table-wrap{overflow-x:auto;margin-bottom:28px;border-radius:var(--radius);border:1px solid var(--card-border)}
 .metrics-table{
-  width:100%;border-collapse:collapse;background:var(--card-bg);
-  border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;font-size:13px;
+  width:100%;border-collapse:collapse;background:var(--card);
+  font-size:13px;font-variant-numeric:tabular-nums;
 }
 .metrics-table th{
-  background:var(--green);color:#fff;padding:10px 14px;text-align:right;
-  font-weight:600;white-space:nowrap;
+  background:rgba(56,189,248,.08);color:var(--cyan);
+  padding:10px 14px;text-align:right;font-weight:600;white-space:nowrap;
+  border-bottom:1px solid var(--card-border);font-size:12px;letter-spacing:.04em;
 }
 .metrics-table th:first-child{text-align:left}
-.metrics-table td{padding:9px 14px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
-.metrics-table td:first-child{text-align:left;font-weight:600;color:#444}
+.metrics-table td{
+  padding:9px 14px;border-bottom:1px solid rgba(124,140,255,.08);
+  text-align:right;white-space:nowrap;color:var(--text-dim);
+}
+.metrics-table td:first-child{text-align:left;font-weight:600;color:var(--text)}
 .metrics-table tr:last-child td{border-bottom:none}
-.metrics-table tr:hover td{background:#f9f9f7}
-.calc-col{color:var(--green);font-weight:600}
+.metrics-table tr:hover td{background:rgba(56,189,248,.04)}
+.calc-col{color:var(--cyan);font-weight:600}
 
 /* ===== 入力フォームビュー ===== */
-#formView{min-height:100vh;padding-bottom:40px}
+#formView{min-height:100vh;padding-bottom:48px}
 .form-hdr{
-  background:var(--card-bg);border-bottom:1px solid var(--border);
-  padding:12px 20px;display:flex;align-items:center;gap:12px;
+  background:rgba(10,14,23,.9);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--card-border);
+  padding:13px 22px;display:flex;align-items:center;gap:12px;
 }
-.form-hdr h2{font-size:16px;font-weight:700;color:var(--green);flex:1}
-.form-main{max-width:560px;margin:24px auto;padding:0 16px}
-.form-card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px}
+.form-hdr h2{
+  font-size:15px;font-weight:700;flex:1;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.form-main{max-width:580px;margin:28px auto;padding:0 18px}
+.form-card{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:30px;
+}
 .form-row{margin-bottom:18px}
-.form-row label{display:block;font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:6px}
-.form-row input,.form-row textarea,.form-row select{
-  width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;
-  font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;
+.form-row label{
+  display:block;font-size:12px;font-weight:600;color:var(--text-muted);
+  margin-bottom:7px;letter-spacing:.06em;text-transform:uppercase;
 }
-.form-row input:focus,.form-row textarea:focus,.form-row select:focus{border-color:var(--green)}
-.form-row textarea{resize:vertical;min-height:80px}
-.form-row .hint{font-size:11px;color:var(--text-muted);margin-top:4px}
-.form-section-title{font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin:24px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border)}
-.save-msg{text-align:center;margin-top:14px;font-size:14px;color:var(--green);min-height:20px}
-.save-err{color:#c0392b}
+.form-row input,.form-row textarea,.form-row select{
+  width:100%;padding:11px 14px;
+  background:rgba(255,255,255,.04);
+  border:1.5px solid rgba(124,140,255,.25);border-radius:10px;
+  font-size:15px;font-family:inherit;color:var(--text);outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  min-height:44px;
+}
+.form-row input:focus,.form-row textarea:focus,.form-row select:focus{
+  border-color:var(--cyan);box-shadow:0 0 0 3px rgba(56,189,248,.15);
+}
+.form-row input::placeholder,.form-row textarea::placeholder{color:var(--text-muted)}
+.form-row textarea{resize:vertical;min-height:88px}
+.form-row .hint{font-size:11px;color:var(--text-muted);margin-top:5px}
+.form-section-title{
+  font-size:11px;font-weight:700;color:var(--cyan);
+  text-transform:uppercase;letter-spacing:.18em;
+  margin:26px 0 12px;padding-bottom:6px;
+  border-bottom:1px solid var(--card-border);
+}
+/* トースト */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);
+  background:rgba(17,26,46,.95);border:1px solid var(--cyan);
+  border-radius:10px;padding:10px 22px;
+  font-size:13px;font-weight:600;color:var(--cyan);
+  opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;z-index:9999;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.save-msg{text-align:center;margin-top:14px;font-size:14px;color:var(--cyan);min-height:20px}
+.save-err{color:var(--red)}
 
 /* ===== 面談レポートビュー ===== */
-#reportView{min-height:100vh;padding-bottom:40px}
+#reportView{min-height:100vh;padding-bottom:48px}
 .report-hdr{
-  background:var(--card-bg);border-bottom:1px solid var(--border);
-  padding:12px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  background:rgba(10,14,23,.9);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--card-border);
+  padding:13px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
 }
-.report-hdr h2{font-size:16px;font-weight:700;color:var(--green);flex:1}
-.report-main{max-width:780px;margin:24px auto;padding:0 16px}
-.report-card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);padding:36px}
-.report-content h1{font-size:22px;font-weight:700;margin-bottom:16px;color:#111}
-.report-content h2{font-size:17px;font-weight:700;margin:20px 0 8px;color:#111;border-bottom:1px solid var(--border);padding-bottom:4px}
-.report-content h3{font-size:15px;font-weight:700;margin:16px 0 6px;color:#333}
-.report-content p{margin-bottom:10px;line-height:1.8}
-.report-content ul,.report-content ol{margin:8px 0 12px 20px}
-.report-content li{margin-bottom:4px;line-height:1.7}
+.report-hdr h2{
+  font-size:15px;font-weight:700;flex:1;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.report-main{max-width:800px;margin:28px auto;padding:0 18px}
+.report-card{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:40px;
+}
+.report-content h1{font-size:22px;font-weight:700;margin-bottom:16px;color:var(--text)}
+.report-content h2{
+  font-size:16px;font-weight:700;margin:22px 0 9px;
+  color:var(--cyan);border-bottom:1px solid var(--card-border);padding-bottom:5px;
+}
+.report-content h3{font-size:14px;font-weight:700;margin:16px 0 6px;color:var(--text-dim)}
+.report-content p{margin-bottom:10px;line-height:1.85;color:var(--text-dim)}
+.report-content ul,.report-content ol{margin:8px 0 12px 22px}
+.report-content li{margin-bottom:5px;line-height:1.75;color:var(--text-dim)}
 .report-content table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}
-.report-content table th,.report-content table td{border:1px solid #ccc;padding:6px 10px;text-align:left}
-.report-content table th{background:#f0f0ee;font-weight:600}
-.report-content strong{font-weight:700}
+.report-content table th,.report-content table td{
+  border:1px solid var(--card-border);padding:7px 11px;text-align:left;color:var(--text-dim);
+}
+.report-content table th{background:rgba(56,189,248,.08);color:var(--cyan);font-weight:600}
+.report-content strong{font-weight:700;color:var(--text)}
 .report-generated{font-size:11px;color:var(--text-muted);margin-top:20px;text-align:right}
-.report-generating{text-align:center;padding:40px;color:var(--text-muted);font-size:14px}
+.report-generating{text-align:center;padding:48px;color:var(--text-muted);font-size:14px}
 
 /* ===== スピナー ===== */
-.spinner{display:inline-block;width:18px;height:18px;border:2px solid #ccc;border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+.spinner{
+  display:inline-block;width:16px;height:16px;
+  border:2px solid rgba(56,189,248,.25);border-top-color:var(--cyan);
+  border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;
+}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ===== 印刷 ===== */
+/* ===== ドット点滅 ===== */
+.dots-anim::after{content:"…";animation:dots 1.2s steps(4,end) infinite}
+@keyframes dots{
+  0%{content:"."}25%{content:".."}50%{content:"..."}75%{content:"...."}100%{content:"."}
+}
+
+/* ===== 印刷（強化） ===== */
 @media print{
-  #loginView,#dashView,#formView,.report-hdr{display:none!important}
+  #loginView,#dashView,#formView,.report-hdr,#demoBadge{display:none!important}
   #reportView{display:block!important}
-  .report-card{box-shadow:none;padding:0}
-  body{font-size:12px;background:#fff}
-  .report-content h1{font-size:18px}
-  .report-content h2{font-size:14px}
+  body{background:#fff!important;color:#111!important;font-size:12px;-webkit-print-color-adjust:exact}
+  .report-card{background:#fff!important;box-shadow:none!important;border:none!important;padding:0!important}
+  .report-content h1{font-size:18px;color:#111!important}
+  .report-content h2{font-size:14px;color:#333!important;border-bottom:1px solid #ccc!important}
+  .report-content h3{font-size:13px;color:#333!important}
+  .report-content p,.report-content li{color:#111!important}
+  .report-content table th{background:#eee!important;color:#111!important}
+  .report-content table td,.report-content table th{border-color:#ccc!important}
+  .report-generated{color:#666!important}
+  body::before,body::after{display:none!important}
   @page{size:A4 portrait;margin:20mm 18mm}
 }
 
 /* ===== レスポンシブ ===== */
-@media(max-width:480px){
+@media(max-width:600px){
   .summary-grid{grid-template-columns:1fr 1fr}
-  .ai-grid{grid-template-columns:1fr}
-  .hdr h1{font-size:14px}
-  .login-card{padding:28px 18px}
+  .atlas-sub-grid{grid-template-columns:1fr}
+  .hdr-logo{font-size:13px}
+  .login-card{padding:32px 22px}
+  .form-card,.report-card{padding:22px 16px}
 }
-@media(max-width:320px){
+@media(max-width:375px){
   .summary-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
+<!-- DEMOバッジ -->
+<div id="demoBadge">DEMO DATA</div>
+
+<!-- トースト -->
+<div class="toast" id="toast"></div>
+
 <!-- ===== ログインビュー ===== -->
 <div id="loginView" class="view">
   <div class="login-card">
     <div class="login-logo">
       <h1>JISOO AI</h1>
-      <p>経営ダッシュボード</p>
+      <p>Executive Intelligence Dashboard</p>
     </div>
     <div class="form-group">
-      <label for="le">メールアドレス</label>
-      <input type="email" id="le" placeholder="例: name@example.com" autocomplete="email">
+      <label for="le">Email Address</label>
+      <input type="email" id="le" placeholder="name@example.com" autocomplete="email">
     </div>
     <div class="form-group">
-      <label for="lp">パスワード</label>
+      <label for="lp">Password</label>
       <input type="password" id="lp" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
     </div>
     <button class="btn-primary" onclick="login()">ログイン</button>
@@ -241,7 +434,7 @@ button{cursor:pointer;font-family:inherit;font-size:inherit}
 <!-- ===== ダッシュボードビュー ===== -->
 <div id="dashView" class="view">
   <div class="hdr">
-    <h1>JISOO AI 経営ダッシュボード</h1>
+    <div class="hdr-logo">JISOO AI</div>
     <div class="hdr-controls">
       <select class="month-sel" id="dashMonth" onchange="onDashMonthChange()"></select>
       <button class="btn-sm filled" onclick="showFormView()">数字を入力</button>
@@ -250,61 +443,74 @@ button{cursor:pointer;font-family:inherit;font-size:inherit}
     </div>
   </div>
   <div class="main">
+
     <!-- サマリーカード -->
-    <div class="section-title">選択月のサマリー</div>
+    <div class="section-title">Monthly Summary</div>
     <div class="summary-grid">
-      <div class="summary-card">
+      <div class="summary-card" id="sc0">
+        <div class="micro-label">Monthly Revenue</div>
         <div class="label">請求額</div>
         <div class="value" id="sBilling">—</div>
         <div class="sub">円（税込）</div>
       </div>
-      <div class="summary-card">
+      <div class="summary-card" id="sc1">
+        <div class="micro-label">Net Profit</div>
         <div class="label">利益</div>
         <div class="value" id="sProfit">—</div>
         <div class="sub">入金 − 経費</div>
       </div>
-      <div class="summary-card">
+      <div class="summary-card" id="sc2">
+        <div class="micro-label">Annual Contracts</div>
         <div class="label">年間契約社数</div>
         <div class="value" id="sContracts">—</div>
         <div class="sub">目標 10社</div>
-        <div class="progress-bar"><div class="progress-fill" id="sContractsProg" style="width:0%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="sContractsProg"></div></div>
       </div>
-      <div class="summary-card">
+      <div class="summary-card" id="sc3">
+        <div class="micro-label">AI Products</div>
         <div class="label">プロダクト完成数</div>
         <div class="value" id="sProducts">—</div>
         <div class="sub">目標 30個</div>
-        <div class="progress-bar"><div class="progress-fill" id="sProductsProg" style="width:0%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="sProductsProg"></div></div>
       </div>
     </div>
 
-    <!-- AI経営参謀ゾーン -->
-    <div class="section-title">AI 経営参謀</div>
-    <div class="ai-grid">
-      <!-- 月次コメント -->
-      <div class="ai-card">
-        <div class="ai-label">月次コメント</div>
-        <div id="aiComment" class="ai-body"><span class="preparing">読み込み中…</span></div>
+    <!-- ATLASゾーン -->
+    <div class="section-title">AI Executive Briefing</div>
+    <div class="atlas-zone">
+      <div class="atlas-header">
+        <div class="atlas-orb"></div>
+        <div class="atlas-title">
+          <div class="name">ATLAS</div>
+          <div class="subtitle">AI Executive Advisor — A.T.L.A.S.</div>
+        </div>
+        <button class="regen-btn" onclick="regenComments()" style="margin-left:auto">ATLASに再分析させる</button>
       </div>
-      <!-- M&Aウォッチ -->
-      <div class="ai-card">
-        <div class="ai-label">M&amp;A ウォッチ</div>
-        <div id="aiMaWatch" class="ai-body"><span class="preparing">読み込み中…</span></div>
+      <!-- 月次コメント吹き出し -->
+      <div class="atlas-bubble" id="aiComment">
+        <span class="preparing">ATLASが分析を準備しています<span class="dots-anim"></span></span>
       </div>
-      <!-- 目標到達予測 -->
-      <div class="ai-card">
-        <div class="ai-label">目標到達予測（12月末）</div>
-        <div id="aiForecast" class="ai-body"><span class="preparing">読み込み中…</span></div>
+      <!-- M&AWatchとForecast -->
+      <div class="atlas-sub-grid">
+        <div class="atlas-sub-panel">
+          <div class="micro-label">M&amp;A Watch</div>
+          <div class="body" id="aiMaWatch"><span class="preparing">準備中…</span></div>
+        </div>
+        <div class="atlas-sub-panel">
+          <div class="micro-label">Forecast</div>
+          <div class="body" id="aiForecast"><span class="preparing">計算中…</span></div>
+        </div>
       </div>
     </div>
 
     <!-- 利益グラフ -->
-    <div class="section-title">利益の推移</div>
+    <div class="section-title">Profit Trend</div>
     <div class="chart-card">
       <canvas id="profitChart"></canvas>
     </div>
 
     <!-- 月次一覧表 -->
-    <div class="section-title">月次一覧</div>
+    <div class="section-title">Monthly Overview</div>
     <div class="table-wrap">
       <table class="metrics-table" id="metricsTable">
         <thead id="metricsHead"></thead>
@@ -388,8 +594,8 @@ button{cursor:pointer;font-family:inherit;font-size:inherit}
   <div class="report-main">
     <div class="report-card">
       <div id="reportContent" class="report-content">
-        <p style="color:var(--text-muted);text-align:center;padding:40px 0">
-          「面談レポート作成」ボタンを押すと、AIが経営サマリーを自動生成します。
+        <p style="color:var(--text-muted);text-align:center;padding:48px 0">
+          「面談レポート作成」ボタンを押すと、ATLASが経営サマリーを自動生成します。
         </p>
       </div>
       <div class="report-generated" id="reportGenTime"></div>
@@ -398,6 +604,22 @@ button{cursor:pointer;font-family:inherit;font-size:inherit}
 </div>
 
 <script>
+/* ===== デモモード判定 ===== */
+var IS_DEMO = /[?&]demo=1/.test(location.search);
+if(IS_DEMO){ document.getElementById("demoBadge").style.display="block"; }
+
+/* ===== デモ用サンプルデータ ===== */
+var DEMO_METRICS = [
+  {year_month:"2026-06",billing:2400000,payment:2100000,expense:980000,confirmed_revenue:2200000,annual_contracts:6,companies_trained:12,instructors:8,ai_products:18,prospects:34,memo:"新規2社獲得。ATLASプロト稼働開始。"},
+  {year_month:"2026-07",billing:2750000,payment:2400000,expense:1050000,confirmed_revenue:2600000,annual_contracts:7,companies_trained:14,instructors:9,ai_products:21,prospects:38,memo:"大阪商談成立。プロダクト3件完成。"},
+  {year_month:"2026-08",billing:3100000,payment:2800000,expense:1120000,confirmed_revenue:2900000,annual_contracts:8,companies_trained:16,instructors:10,ai_products:24,prospects:45,memo:"Q3スタート好調。M&A候補1社浮上。"}
+];
+var DEMO_COMMENTS = {
+  "2026-06":{year_month:"2026-06",monthly_comment:"6月は新規2社を獲得し、年間契約6社に到達しました。入金率87.5%は過去最高水準です。ATLASが分析した結果、このペースで推移すれば年内10社目標の達成確率は78%と見込まれます。経費対比の利益率は52%で健全ですが、研修企業への転換率をさらに高めることで上積みが期待できます。",ma_watch:"候補企業リスト：福岡市内のAIコンサル2社が売却意向あり。規模は年商5,000〜8,000万円。ISC側のキャッシュポジションが整い次第、加藤さんへ打診を推奨します。",forecast_note:"現トレンド継続で12月末：契約10社・プロダクト28個（目標達成率93%）"},
+  "2026-07":{year_month:"2026-07",monthly_comment:"7月は大阪商談が成立し契約7社へ拡大。プロダクト21個完成はペース通りです。入金率87%を維持しつつ、経費増加を1.7%に抑えた点は評価できます。ATLASはQ3での契約8社到達を高確度と判断しています。",ma_watch:"福岡候補A社が具体的な交渉フェーズへ移行。加藤さんとの面談を7月末までに設定することを推奨。バリュエーション予備試算：7,200万円前後。",forecast_note:"7月時点予測：12月末に契約10社・プロダクト29個（目標達成率97%）"},
+  "2026-08":{year_month:"2026-08",monthly_comment:"8月はQ3最高の請求額3,100万円を達成。利益率も52%超を維持し、年間目標の80%を折り返し前に消化しました。ATLASはこの成長曲線を「加速フェーズ」と分類しています。10月までに契約9社が視野に入ります。",ma_watch:"M&A候補A社とのNDA締結完了。デューデリジェンス準備フェーズへ。候補B社（東京・SaaS）も新規浮上。2社同時検討の可否を加藤さんに確認推奨。",forecast_note:"8月時点予測：12月末に契約11社・プロダクト31個（目標超過達成の可能性大）"}
+};
+
 /* ===== 設定読み込み ===== */
 var CFG = window.JISOO_CONFIG || {};
 var SB_URL = (CFG.SUPABASE_URL || "").replace(/\/$/, "");
@@ -407,16 +629,12 @@ var SESS_KEY = "jisoo_sess_v1";
 var TOKEN = "";
 
 /* ===== セッション管理 ===== */
-function saveSession(d){
-  try{ if(d&&d.access_token) localStorage.setItem(SESS_KEY, JSON.stringify({access_token:d.access_token,refresh_token:d.refresh_token})); }catch(e){}
-}
+function saveSession(d){ try{ if(d&&d.access_token) localStorage.setItem(SESS_KEY,JSON.stringify({access_token:d.access_token,refresh_token:d.refresh_token})); }catch(e){} }
 function clearSession(){ try{ localStorage.removeItem(SESS_KEY); }catch(e){} }
 function loadSession(){ try{ return JSON.parse(localStorage.getItem(SESS_KEY)||"null"); }catch(e){ return null; } }
 
 /* ===== ヘッダー生成 ===== */
-function hdr(){
-  return {"apikey":SB_KEY,"Authorization":"Bearer "+(TOKEN||SB_KEY)};
-}
+function hdr(){ return {"apikey":SB_KEY,"Authorization":"Bearer "+(TOKEN||SB_KEY)}; }
 
 /* ===== トークン更新 ===== */
 function refreshAuth(done){
@@ -434,19 +652,20 @@ function refreshAuth(done){
 
 /* ===== 起動時自動ログイン ===== */
 function tryAutoLogin(){
+  if(IS_DEMO){ enterDash(); return; }
   refreshAuth(function(ok){
     if(ok){ enterDash(); }
     else { showLogin(); }
   });
 }
-window.addEventListener("load", function(){
+window.addEventListener("load",function(){
   tryAutoLogin();
-  // 45分ごとにトークンを更新
-  setInterval(function(){ refreshAuth(); }, 45*60*1000);
+  setInterval(function(){ if(!IS_DEMO) refreshAuth(); }, 45*60*1000);
 });
 
 /* ===== ログイン ===== */
 function login(){
+  if(IS_DEMO){ enterDash(); return; }
   var email=(document.getElementById("le").value||"").trim();
   var pw=document.getElementById("lp").value||"";
   var err=document.getElementById("lerr");
@@ -458,8 +677,7 @@ function login(){
     body:JSON.stringify({email:email,password:pw})
   }).then(function(r){ return r.json(); }).then(function(d){
     if(d&&d.access_token){
-      TOKEN=d.access_token;
-      saveSession(d);
+      TOKEN=d.access_token; saveSession(d);
       document.getElementById("lerr").textContent="";
       enterDash();
     } else {
@@ -469,9 +687,7 @@ function login(){
 }
 
 /* ===== ログアウト ===== */
-function logout(){
-  TOKEN=""; clearSession(); showLogin();
-}
+function logout(){ TOKEN=""; clearSession(); showLogin(); }
 
 /* ===== ビュー切替 ===== */
 function showView(id){
@@ -492,25 +708,28 @@ var SELECTED_MONTH = "";
 
 function enterDash(){
   showView("dashView");
-  loadDashData();
+  if(IS_DEMO){
+    ALL_METRICS = DEMO_METRICS;
+    ALL_COMMENTS = DEMO_COMMENTS;
+    buildMonthSelector();
+    renderDash();
+  } else {
+    loadDashData();
+  }
 }
 
 function loadDashData(){
-  // monthly_metrics と ai_comments を並行取得
   Promise.all([
     sbGet("monthly_metrics?select=*&order=year_month"),
     sbGet("ai_comments?select=*&order=year_month")
   ]).then(function(results){
     ALL_METRICS = results[0] || [];
     var comments = results[1] || [];
-    // ai_comments をyear_monthをキーにしたマップへ
     ALL_COMMENTS = {};
     comments.forEach(function(c){ ALL_COMMENTS[c.year_month] = c; });
     buildMonthSelector();
     renderDash();
-  }).catch(function(e){
-    console.error("データ取得エラー:", e);
-  });
+  }).catch(function(e){ console.error("データ取得エラー:", e); });
 }
 
 /* ===== 月セレクター構築 ===== */
@@ -519,12 +738,9 @@ function buildMonthSelector(){
   sel.innerHTML = "";
   if(ALL_METRICS.length === 0){
     var opt = document.createElement("option");
-    opt.value = "";
-    opt.textContent = "データなし";
-    sel.appendChild(opt);
-    return;
+    opt.value = ""; opt.textContent = "データなし";
+    sel.appendChild(opt); return;
   }
-  // 降順（新しい月が上）
   var months = ALL_METRICS.map(function(m){ return m.year_month; }).sort().reverse();
   months.forEach(function(ym){
     var opt = document.createElement("option");
@@ -532,10 +748,7 @@ function buildMonthSelector(){
     opt.textContent = ym.replace("-","年")+"月";
     sel.appendChild(opt);
   });
-  // 初回: SELECTED_MONTH が未設定なら最新月
-  if(!SELECTED_MONTH || !months.includes(SELECTED_MONTH)){
-    SELECTED_MONTH = months[0];
-  }
+  if(!SELECTED_MONTH || !months.includes(SELECTED_MONTH)){ SELECTED_MONTH = months[0]; }
   sel.value = SELECTED_MONTH;
 }
 
@@ -562,6 +775,23 @@ function getMetric(ym){
 function fmt(n){ return n==null?"—":(Number(n)||0).toLocaleString("ja-JP"); }
 function pct(v,max){ return max>0?Math.min(100,Math.round(v/max*100)):0; }
 
+/* ===== カウントアップアニメ ===== */
+function countUp(el, target, suffix){
+  if(window.matchMedia("(prefers-reduced-motion:reduce)").matches){
+    el.textContent = fmt(target)+(suffix||""); return;
+  }
+  var start = 0, dur = 800, startTime = null;
+  function step(ts){
+    if(!startTime) startTime = ts;
+    var progress = Math.min((ts - startTime)/dur, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
+    var cur = Math.round(start + (target - start) * ease);
+    el.textContent = fmt(cur)+(suffix||"");
+    if(progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
 /* ===== サマリーカード描画 ===== */
 function renderSummary(){
   var m = getMetric(SELECTED_MONTH) || {};
@@ -572,125 +802,128 @@ function renderSummary(){
   var contracts = m.annual_contracts!=null?Number(m.annual_contracts):null;
   var products = m.ai_products!=null?Number(m.ai_products):null;
 
-  document.getElementById("sBilling").textContent = billing!=null?fmt(billing)+"円":"—";
-  document.getElementById("sProfit").textContent = profit!=null?fmt(profit)+"円":"—";
-  document.getElementById("sContracts").textContent = contracts!=null?contracts+"社":"—";
-  document.getElementById("sProducts").textContent = products!=null?products+"個":"—";
-  document.getElementById("sContractsProg").style.width = contracts!=null?pct(contracts,10)+"%":"0%";
-  document.getElementById("sProductsProg").style.width = products!=null?pct(products,30)+"%":"0%";
+  var bEl = document.getElementById("sBilling");
+  var pEl = document.getElementById("sProfit");
+  var cEl = document.getElementById("sContracts");
+  var prEl = document.getElementById("sProducts");
+
+  if(billing!=null){ countUp(bEl,billing,"円"); } else { bEl.textContent="—"; }
+  if(profit!=null){ countUp(pEl,profit,"円"); } else { pEl.textContent="—"; }
+  if(contracts!=null){ countUp(cEl,contracts,"社"); } else { cEl.textContent="—"; }
+  if(products!=null){ countUp(prEl,products,"個"); } else { prEl.textContent="—"; }
+
+  /* プログレスバー */
+  setTimeout(function(){
+    document.getElementById("sContractsProg").style.width = contracts!=null?pct(contracts,10)+"%":"0%";
+    document.getElementById("sProductsProg").style.width = products!=null?pct(products,30)+"%":"0%";
+  }, 80);
+
+  /* staggerフェードイン */
+  [0,1,2,3].forEach(function(i){
+    var sc = document.getElementById("sc"+i);
+    sc.classList.remove("visible");
+    setTimeout(function(){ sc.classList.add("visible"); }, 60*i);
+  });
+}
+
+/* ===== タイプライター演出 ===== */
+var _typeTimer = null;
+function typewriter(el, text, spd){
+  if(_typeTimer){ clearTimeout(_typeTimer); }
+  el.textContent = "";
+  var i = 0;
+  if(window.matchMedia("(prefers-reduced-motion:reduce)").matches){
+    el.textContent = text; return;
+  }
+  function next(){
+    if(i < text.length){
+      el.textContent += text[i++];
+      _typeTimer = setTimeout(next, spd||20);
+    }
+  }
+  next();
 }
 
 /* ===== AIカード描画 ===== */
 function renderAiCards(){
   var c = ALL_COMMENTS[SELECTED_MONTH] || null;
-
-  // 月次コメント
   var commentEl = document.getElementById("aiComment");
-  if(c&&c.monthly_comment){
-    commentEl.innerHTML = esc(c.monthly_comment);
-  } else {
-    commentEl.innerHTML = '<span class="preparing">AIコメントは準備中です。</span><br>'
-      +'<button class="regen-btn" onclick="regenComments()">再生成</button>';
-  }
-
-  // M&Aウォッチ
   var maEl = document.getElementById("aiMaWatch");
-  if(c&&c.ma_watch){
-    maEl.innerHTML = esc(c.ma_watch);
+
+  /* 月次コメント（タイプライター） */
+  if(c && c.monthly_comment){
+    commentEl.innerHTML = "";
+    typewriter(commentEl, c.monthly_comment, 20);
   } else {
-    maEl.innerHTML = '<span class="preparing">準備中です。</span>';
+    commentEl.innerHTML = '<span class="preparing">ATLASが分析を準備しています<span class="dots-anim"></span></span>';
   }
 
-  // 目標到達予測（線形回帰はAIなしで計算）
+  /* M&AWatchテキスト */
+  if(c && c.ma_watch){
+    maEl.textContent = c.ma_watch;
+  } else {
+    maEl.innerHTML = '<span class="preparing">データを待機中…</span>';
+  }
+
   renderForecast(c);
 }
 
 /* ===== 目標到達予測（線形回帰） ===== */
 function renderForecast(aiComment){
   var el = document.getElementById("aiForecast");
-  // データが2点以上ないと計算できない
   var sorted = ALL_METRICS.slice().sort(function(a,b){ return a.year_month>b.year_month?1:-1; });
   if(sorted.length < 2){
     el.innerHTML = '<span class="preparing">データが2ヶ月分以上あると予測できます。</span>';
-    if(aiComment&&aiComment.forecast_note){
-      el.innerHTML += '<div class="ai-note">'+esc(aiComment.forecast_note)+'</div>';
-    }
+    if(aiComment&&aiComment.forecast_note){ el.innerHTML += '<div class="ai-note">'+esc(aiComment.forecast_note)+'</div>'; }
     return;
   }
-
-  // 月を数値化（基準月からの差分）
   var base = sorted[0].year_month;
   function monthIdx(ym){
     var by=parseInt(base.split("-")[0]),bm=parseInt(base.split("-")[1]);
     var y=parseInt(ym.split("-")[0]),m=parseInt(ym.split("-")[1]);
     return (y-by)*12+(m-bm);
   }
-  // 12月末のインデックス
-  var dec = monthIdx(base.split("-")[0]+"-12"); // 同年12月
-  // もし基準月が12月以降なら翌年
-  var baseYear = parseInt(base.split("-")[0]);
   var curYear = new Date().getFullYear();
-  var targetYear = curYear;
-  var targetDec = monthIdx(targetYear+"-12");
-
+  var targetDec = monthIdx(curYear+"-12");
   function linearForecast(values){
-    // values = [{x,y}]
     if(values.length<2) return null;
-    var n=values.length;
-    var sx=0,sy=0,sxy=0,sx2=0;
+    var n=values.length,sx=0,sy=0,sxy=0,sx2=0;
     values.forEach(function(p){ sx+=p.x; sy+=p.y; sxy+=p.x*p.y; sx2+=p.x*p.x; });
     var denom=n*sx2-sx*sx;
     if(denom===0) return null;
-    var a=(n*sxy-sx*sy)/denom;
-    var b=(sy-a*sx)/n;
+    var a=(n*sxy-sx*sy)/denom, b=(sy-a*sx)/n;
     return function(x){ return Math.round(a*x+b); };
   }
-
   var contractPts=[], productPts=[];
   sorted.forEach(function(m){
     var x=monthIdx(m.year_month);
     if(m.annual_contracts!=null) contractPts.push({x:x,y:Number(m.annual_contracts)});
     if(m.ai_products!=null) productPts.push({x:x,y:Number(m.ai_products)});
   });
-
   var fContract=linearForecast(contractPts);
   var fProduct=linearForecast(productPts);
   var predContracts=fContract?fContract(targetDec):null;
   var predProducts=fProduct?fProduct(targetDec):null;
-
   var html="";
-  if(predContracts!=null){
-    html+='<div class="badge">年間契約: '+targetYear+'年12月末 推定 '+Math.max(0,predContracts)+'社</div><br>';
-  }
-  if(predProducts!=null){
-    html+='<div class="badge">AIプロダクト: '+targetYear+'年12月末 推定 '+Math.max(0,predProducts)+'個</div>';
-  }
+  if(predContracts!=null){ html+='<span class="badge">契約: '+curYear+'年12月末 推定 '+Math.max(0,predContracts)+'社</span><br>'; }
+  if(predProducts!=null){ html+='<span class="badge">プロダクト: 推定 '+Math.max(0,predProducts)+'個</span>'; }
   if(!html) html='<span class="preparing">計算できるデータがありません。</span>';
-  if(aiComment&&aiComment.forecast_note){
-    html+='<div class="ai-note">'+esc(aiComment.forecast_note)+'</div>';
-  }
+  if(aiComment&&aiComment.forecast_note){ html+='<div class="ai-note">'+esc(aiComment.forecast_note)+'</div>'; }
   el.innerHTML=html;
 }
 
 /* ===== AIコメント再生成 ===== */
 function regenComments(){
+  if(IS_DEMO){ renderAiCards(); return; }
   var commentEl=document.getElementById("aiComment");
-  commentEl.innerHTML='<span class="spinner"></span>生成中…';
+  commentEl.innerHTML='<span class="spinner"></span>ATLASが再分析中…';
   callAiSanbo(SELECTED_MONTH,"comments").then(function(res){
-    if(res&&res.ok&&res.comments){
-      ALL_COMMENTS[SELECTED_MONTH]=res.comments;
-      renderAiCards();
-    } else {
-      commentEl.innerHTML='<span class="preparing">生成に失敗しました。しばらく後で再試行してください。</span>'
-        +'<br><button class="regen-btn" onclick="regenComments()">再生成</button>';
-    }
-  }).catch(function(){
-    commentEl.innerHTML='<span class="preparing">通信エラーが発生しました。</span>'
-      +'<br><button class="regen-btn" onclick="regenComments()">再生成</button>';
-  });
+    if(res&&res.ok&&res.comments){ ALL_COMMENTS[SELECTED_MONTH]=res.comments; renderAiCards(); }
+    else { commentEl.innerHTML='<span class="preparing">再分析に失敗しました。しばらく後で再試行してください。</span>'; }
+  }).catch(function(){ commentEl.innerHTML='<span class="preparing">通信エラーが発生しました。</span>'; });
 }
 
-/* ===== グラフ描画 ===== */
+/* ===== グラフ描画（ネオンシアン折れ線） ===== */
 var profitChartInst = null;
 function renderChart(){
   var sorted = ALL_METRICS.slice().sort(function(a,b){ return a.year_month>b.year_month?1:-1; });
@@ -703,34 +936,53 @@ function renderChart(){
   });
   var ctx=document.getElementById("profitChart").getContext("2d");
   if(profitChartInst){ profitChartInst.destroy(); }
+
+  /* グラデーション塗り */
+  var grad = ctx.createLinearGradient(0,0,0,240);
+  grad.addColorStop(0,"rgba(56,189,248,.35)");
+  grad.addColorStop(1,"rgba(56,189,248,.02)");
+
   profitChartInst=new Chart(ctx,{
     type:"line",
     data:{
       labels:labels,
       datasets:[{
-        label:"利益（円）",
-        data:data,
-        borderColor:"#0F6E56",
-        backgroundColor:"rgba(15,110,86,.10)",
-        borderWidth:2,
-        pointBackgroundColor:"#0F6E56",
+        label:"利益（円）",data:data,
+        borderColor:"#38BDF8",
+        backgroundColor:grad,
+        borderWidth:2.5,
+        pointBackgroundColor:"#38BDF8",
+        pointBorderColor:"#0A0E17",
+        pointBorderWidth:2,
         pointRadius:5,
-        tension:.3,
-        fill:true
+        tension:.35,fill:true
       }]
     },
     options:{
       responsive:true,
+      animation:{duration:800},
       plugins:{
         legend:{display:false},
-        tooltip:{callbacks:{label:function(ctx){ return "  "+ctx.parsed.y.toLocaleString("ja-JP")+"円"; }}}
+        tooltip:{
+          backgroundColor:"rgba(17,26,46,.95)",
+          borderColor:"rgba(56,189,248,.3)",
+          borderWidth:1,
+          titleColor:"#38BDF8",
+          bodyColor:"#E2E8F0",
+          callbacks:{label:function(ctx){ return "  "+ctx.parsed.y.toLocaleString("ja-JP")+"円"; }}
+        }
       },
       scales:{
         y:{
-          ticks:{callback:function(v){ return v.toLocaleString("ja-JP"); }},
-          grid:{color:"rgba(0,0,0,.05)"}
+          ticks:{color:"#64748B",callback:function(v){ return v.toLocaleString("ja-JP"); }},
+          grid:{color:"rgba(255,255,255,.06)"},
+          border:{color:"rgba(255,255,255,.06)"}
         },
-        x:{grid:{display:false}}
+        x:{
+          ticks:{color:"#64748B"},
+          grid:{display:false},
+          border:{color:"rgba(255,255,255,.06)"}
+        }
       }
     }
   });
@@ -757,26 +1009,19 @@ function renderTable(){
     document.getElementById("metricsBody").innerHTML='<tr><td colspan="2" style="text-align:center;color:var(--text-muted)">データがありません</td></tr>';
     return;
   }
-  // ヘッダー（項目 + 月名）
   var hRow='<tr><th>項目</th>';
   sorted.forEach(function(m){ hRow+='<th>'+m.year_month.replace("-","年")+"月"+'</th>'; });
   hRow+='</tr>';
   document.getElementById("metricsHead").innerHTML=hRow;
-
-  // 行
   var body="";
   ROWS.forEach(function(row){
     var isCalc=row.calc;
     body+='<tr><td>'+esc(row.label)+'</td>';
     sorted.forEach(function(m){
       var val;
-      if(row.key==="_uncollected"){
-        val=(m.billing!=null&&m.payment!=null)?Number(m.billing)-Number(m.payment):null;
-      } else if(row.key==="_profit"){
-        val=(m.payment!=null&&m.expense!=null)?Number(m.payment)-Number(m.expense):null;
-      } else {
-        val=m[row.key]!=null?Number(m[row.key]):null;
-      }
+      if(row.key==="_uncollected"){ val=(m.billing!=null&&m.payment!=null)?Number(m.billing)-Number(m.payment):null; }
+      else if(row.key==="_profit"){ val=(m.payment!=null&&m.expense!=null)?Number(m.payment)-Number(m.expense):null; }
+      else { val=m[row.key]!=null?Number(m[row.key]):null; }
       body+='<td class="'+(isCalc?"calc-col":"")+'">'+fmt(val)+'</td>';
     });
     body+='</tr>';
@@ -809,16 +1054,21 @@ function callAiSanbo(ym, mode){
   }).then(function(res){ return res.json(); });
 }
 
+/* ===== トースト表示 ===== */
+function showToast(msg, dur){
+  var el = document.getElementById("toast");
+  el.textContent = msg; el.classList.add("show");
+  setTimeout(function(){ el.classList.remove("show"); }, dur||2800);
+}
+
 /* ===== 入力フォーム ===== */
 function initFormView(){
-  // デフォルト=先月
   var now=new Date();
-  var y=now.getFullYear(), m=now.getMonth(); // getMonth()は0始まり→先月
+  var y=now.getFullYear(), m=now.getMonth();
   if(m===0){ y--; m=12; }
   var ym=y+"-"+("0"+m).slice(-2);
   var fMonth=document.getElementById("fMonth");
   if(!fMonth.value) fMonth.value=ym;
-  // 既存データがあれば読み込む
   loadFormData(fMonth.value);
   fMonth.onchange=function(){ loadFormData(fMonth.value); };
 }
@@ -827,9 +1077,9 @@ function loadFormData(ym){
   if(!ym) return;
   var existing=getMetric(ym);
   var fields={billing:"fBilling",payment:"fPayment",expense:"fExpense",
-               confirmed_revenue:"fConfirmedRevenue",annual_contracts:"fAnnualContracts",
-               companies_trained:"fCompaniesTrained",instructors:"fInstructors",
-               ai_products:"fAiProducts",prospects:"fProspects",memo:"fMemo"};
+              confirmed_revenue:"fConfirmedRevenue",annual_contracts:"fAnnualContracts",
+              companies_trained:"fCompaniesTrained",instructors:"fInstructors",
+              ai_products:"fAiProducts",prospects:"fProspects",memo:"fMemo"};
   for(var k in fields){
     var el=document.getElementById(fields[k]);
     if(el) el.value=(existing&&existing[k]!=null)?existing[k]:"";
@@ -845,32 +1095,26 @@ function numOrNull(id){
 }
 
 function saveForm(){
+  if(IS_DEMO){ showToast("ATLASが分析中…"); setTimeout(function(){ showDashView(); },1500); return; }
   var ym=(document.getElementById("fMonth").value||"").trim();
   if(!ym){ document.getElementById("saveMsg").innerHTML='<span class="save-err">月を選択してください。</span>'; return; }
   var row={
     year_month:ym,
-    billing:numOrNull("fBilling"),
-    payment:numOrNull("fPayment"),
-    expense:numOrNull("fExpense"),
-    confirmed_revenue:numOrNull("fConfirmedRevenue"),
-    annual_contracts:numOrNull("fAnnualContracts"),
-    companies_trained:numOrNull("fCompaniesTrained"),
-    instructors:numOrNull("fInstructors"),
-    ai_products:numOrNull("fAiProducts"),
-    prospects:numOrNull("fProspects"),
+    billing:numOrNull("fBilling"),payment:numOrNull("fPayment"),expense:numOrNull("fExpense"),
+    confirmed_revenue:numOrNull("fConfirmedRevenue"),annual_contracts:numOrNull("fAnnualContracts"),
+    companies_trained:numOrNull("fCompaniesTrained"),instructors:numOrNull("fInstructors"),
+    ai_products:numOrNull("fAiProducts"),prospects:numOrNull("fProspects"),
     memo:(document.getElementById("fMemo").value||"").trim()||null
   };
   var msg=document.getElementById("saveMsg");
   msg.innerHTML='<span class="spinner"></span>保存中…';
   sbUpsert("monthly_metrics",[row]).then(function(){
-    msg.textContent="保存しました。AI参謀が分析中…";
-    // ALL_METRICSを更新
+    showToast("ATLASが分析中…");
     var found=false;
     for(var i=0;i<ALL_METRICS.length;i++){
       if(ALL_METRICS[i].year_month===ym){ ALL_METRICS[i]=Object.assign(ALL_METRICS[i],row); found=true; break; }
     }
     if(!found) ALL_METRICS.push(row);
-    // AIコメント生成（失敗してもエラーで止めない）
     callAiSanbo(ym,"comments").then(function(res){
       if(res&&res.ok&&res.comments){ ALL_COMMENTS[ym]=res.comments; }
       msg.textContent="保存しました。ダッシュボードへ戻ります…";
@@ -890,10 +1134,29 @@ function generateReport(){
   var printBtn=document.getElementById("printBtn");
   var content=document.getElementById("reportContent");
   var genTime=document.getElementById("reportGenTime");
+  if(IS_DEMO){
+    var demoLines=[
+      "# 面談レポート（デモ）","",
+      "## 経営サマリー","",
+      "現在のデータは**デモモード**で表示されています。実際のデータを入力してレポートを生成してください。","",
+      "## 主要指標（2026年8月時点）","",
+      "| 指標 | 数値 | 目標 |",
+      "|---|---|---|",
+      "| 年間契約社数 | 8社 | 10社 |",
+      "| AIプロダクト | 24個 | 30個 |",
+      "| 利益率 | 52% | — |","",
+      "## ATLASからの所見","",
+      "順調な成長トレンドを維持しています。12月末時点で**目標超過達成**の可能性が高い状況です。"
+    ];
+    content.innerHTML=renderMd(demoLines.join("\n"));
+    var now=new Date();
+    genTime.textContent="生成日時（デモ）: "+now.getFullYear()+"年"+(now.getMonth()+1)+"月"+now.getDate()+"日";
+    printBtn.style.display="inline-block";
+    return;
+  }
   btn.disabled=true;
-  content.innerHTML='<div class="report-generating"><span class="spinner"></span>AIが面談レポートを生成しています…</div>';
-  printBtn.style.display="none";
-  genTime.textContent="";
+  content.innerHTML='<div class="report-generating"><span class="spinner"></span>ATLASが面談レポートを生成しています…</div>';
+  printBtn.style.display="none"; genTime.textContent="";
   callAiSanbo(SELECTED_MONTH,"report").then(function(res){
     btn.disabled=false;
     if(res&&res.ok&&res.report_md){
@@ -903,15 +1166,15 @@ function generateReport(){
       printBtn.style.display="inline-block";
     } else {
       var err=(res&&res.error)||"不明なエラー";
-      content.innerHTML='<p style="color:#c0392b">レポートの生成に失敗しました: '+esc(err)+'</p>';
+      content.innerHTML='<p style="color:var(--red)">レポートの生成に失敗しました: '+esc(err)+'</p>';
     }
   }).catch(function(e){
     btn.disabled=false;
-    content.innerHTML='<p style="color:#c0392b">通信エラーが発生しました: '+esc(e&&e.message||String(e))+'</p>';
+    content.innerHTML='<p style="color:var(--red)">通信エラーが発生しました: '+esc(e&&e.message||String(e))+'</p>';
   });
 }
 
-/* ===== マークダウン 簡易レンダラ（#/##見出し・**太字**・箇条書き・表） ===== */
+/* ===== マークダウン 簡易レンダラ ===== */
 function renderMd(md){
   var lines=md.split("\n");
   var html="", inTable=false, inList=false;
@@ -920,7 +1183,6 @@ function renderMd(md){
   var tableHead=true;
   for(var i=0;i<lines.length;i++){
     var line=lines[i];
-    // 表
     if(/^\|/.test(line)){
       if(!inTable){ closeList(); html+='<table><thead><tr>'; inTable=true; tableHead=true; }
       if(/^[\|\s\-:]+$/.test(line)){ html+='</tr></thead><tbody>'; tableHead=false; continue; }
@@ -930,23 +1192,18 @@ function renderMd(md){
       continue;
     }
     closeTable(); tableHead=true;
-    // 見出し
     if(/^###\s/.test(line)){ closeList(); html+='<h3>'+inlineMd(line.slice(4))+'</h3>'; continue; }
     if(/^##\s/.test(line)){ closeList(); html+='<h2>'+inlineMd(line.slice(3))+'</h2>'; continue; }
     if(/^#\s/.test(line)){ closeList(); html+='<h1>'+inlineMd(line.slice(2))+'</h1>'; continue; }
-    // リスト
     if(/^[-*]\s/.test(line)){
       if(!inList){ html+='<ul>'; inList=true; }
-      html+='<li>'+inlineMd(line.slice(2))+'</li>';
-      continue;
+      html+='<li>'+inlineMd(line.slice(2))+'</li>'; continue;
     }
     if(/^\d+\.\s/.test(line)){
       if(!inList){ html+='<ol>'; inList=true; }
-      html+='<li>'+inlineMd(line.replace(/^\d+\.\s/,""))+'</li>';
-      continue;
+      html+='<li>'+inlineMd(line.replace(/^\d+\.\s/,""))+'</li>'; continue;
     }
     closeList();
-    // 空行
     if(line.trim()===""){ html+='<p></p>'; continue; }
     html+='<p>'+inlineMd(line)+'</p>';
   }
