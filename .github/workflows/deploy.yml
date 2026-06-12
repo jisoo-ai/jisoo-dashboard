@@ -1,0 +1,34 @@
+name: Deploy ai-sanbo Function
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/functions/**'
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Deno 2.x
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: 型・構文チェック（deno check）
+        env:
+          DENO_NO_PACKAGE_JSON: '1'
+        run: deno check supabase/functions/ai-sanbo/index.ts
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Deploy ai-sanbo
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: supabase functions deploy ai-sanbo --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}

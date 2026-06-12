@@ -1,0 +1,19 @@
+{
+  "name": "jisoo-dashboard",
+  "version": "1.0.0",
+  "description": "JISOO AI株式会社（AI研修×AIプロダクト事業）の月次経営数字を、経営メンバーとM&Aアドバイザー（加藤さん）に共有するための管理画面。",
+  "main": "config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "supabase": "^2.106.0"
+  }
+}

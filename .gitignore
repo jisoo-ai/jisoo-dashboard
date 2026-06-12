@@ -1,0 +1,5 @@
+node_modules/
+.DS_Store
+*.log
+supabase/.temp/
+接続情報*.txt
