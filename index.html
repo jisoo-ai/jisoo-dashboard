@@ -496,58 +496,53 @@ body::after{
         <div class="atlas-orb">
           <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="faceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#1a1060"/>
-                <stop offset="100%" stop-color="#2d1a6e"/>
+              <linearGradient id="helmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#2b1d7a"/>
+                <stop offset="55%" stop-color="#1a1060"/>
+                <stop offset="100%" stop-color="#0f0a38"/>
               </linearGradient>
               <linearGradient id="plateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#252080"/>
-                <stop offset="100%" stop-color="#130d40"/>
+                <stop offset="0%" stop-color="#7c6cf0"/>
+                <stop offset="45%" stop-color="#5b4ad6"/>
+                <stop offset="100%" stop-color="#33288f"/>
               </linearGradient>
               <filter id="eyeGlow" x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="2.5" result="blur"/>
                 <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
               </filter>
-              <filter id="coreGlow" x="-100%" y="-100%" width="300%" height="300%">
-                <feGaussianBlur stdDeviation="3" result="blur"/>
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
             </defs>
-            <!-- 外縁ネオン縁取り -->
-            <ellipse cx="40" cy="42" rx="31" ry="34" fill="none" stroke="#38BDF8" stroke-width="1.5" opacity=".7"/>
-            <!-- メインフェイスプレート -->
-            <ellipse cx="40" cy="42" rx="29" ry="32" fill="url(#faceGrad)"/>
-            <!-- 額パネル（上部） -->
-            <path d="M18 30 Q40 16 62 30 L58 42 Q40 34 22 42Z" fill="url(#plateGrad)" opacity=".9"/>
-            <!-- チークパネル左 -->
-            <path d="M14 44 L22 38 L24 62 L14 58Z" fill="#1a1060" opacity=".85"/>
-            <!-- チークパネル右 -->
-            <path d="M66 44 L58 38 L56 62 L66 58Z" fill="#1a1060" opacity=".85"/>
-            <!-- 顎パネル -->
-            <path d="M24 64 Q40 76 56 64 L54 58 Q40 68 26 58Z" fill="#1a1060" opacity=".8"/>
-            <!-- 眉ライン左 -->
-            <line x1="22" y1="35" x2="38" y2="33" stroke="#38BDF8" stroke-width="1.2" opacity=".5"/>
-            <!-- 眉ライン右 -->
-            <line x1="42" y1="33" x2="58" y2="35" stroke="#38BDF8" stroke-width="1.2" opacity=".5"/>
-            <!-- 目スリット左（シアン・グロー付き） -->
-            <rect x="21" y="43" width="16" height="4" rx="2" fill="#38BDF8" filter="url(#eyeGlow)" style="animation:eye-glow 2.2s ease-in-out infinite"/>
-            <!-- 目スリット右 -->
-            <rect x="43" y="43" width="16" height="4" rx="2" fill="#38BDF8" filter="url(#eyeGlow)" style="animation:eye-glow 2.2s ease-in-out infinite"/>
-            <!-- 鼻筋ライン -->
-            <line x1="40" y1="50" x2="40" y2="60" stroke="#38BDF8" stroke-width=".8" opacity=".25"/>
-            <!-- 口パネル -->
-            <rect x="29" y="62" width="22" height="3" rx="1.5" fill="#38BDF8" opacity=".2"/>
-            <!-- 額コア（紫） -->
-            <circle cx="40" cy="26" r="4" fill="#8B5CF6" filter="url(#coreGlow)" style="animation:core-pulse 2.8s ease-in-out infinite"/>
-            <circle cx="40" cy="26" r="2" fill="#c084fc"/>
-            <!-- パネル区切りライン -->
-            <line x1="22" y1="57" x2="58" y2="57" stroke="#38BDF8" stroke-width=".7" opacity=".3"/>
-            <line x1="14" y1="44" x2="66" y2="44" stroke="#38BDF8" stroke-width=".5" opacity=".2"/>
+            <!-- ヘルメット外殻（平らめの頭頂・四角いあご） -->
+            <path d="M40 8 C54 8 62 16 63 28 L63 38 C63 50 61 58 57 64 C53 70 47 73 40 73 C33 73 27 70 23 64 C19 58 17 50 17 38 L17 28 C18 16 26 8 40 8 Z" fill="url(#helmGrad)" stroke="#38BDF8" stroke-width="1.3" opacity=".95"/>
+            <!-- 耳ディスク -->
+            <circle cx="19" cy="40" r="3.8" fill="#1a1060" stroke="#38BDF8" stroke-width="1" opacity=".9"/>
+            <circle cx="61" cy="40" r="3.8" fill="#1a1060" stroke="#38BDF8" stroke-width="1" opacity=".9"/>
+            <circle cx="19" cy="40" r="1.4" fill="#8B5CF6"/>
+            <circle cx="61" cy="40" r="1.4" fill="#8B5CF6"/>
+            <!-- フェイスプレート（こめかみの切れ込み・四角いあご） -->
+            <path d="M40 13 C49 13 56 18 57 26 L57 33 L54 35.5 L56 43 C56 52 53 60 48 65 L44 68 L36 68 L32 65 C27 60 24 52 24 43 L26 35.5 L23 33 L23 26 C24 18 31 13 40 13 Z" fill="url(#plateGrad)" stroke="#8B5CF6" stroke-width=".8" opacity=".97"/>
+            <!-- 頭頂センターライン -->
+            <line x1="40" y1="8" x2="40" y2="13" stroke="#8B5CF6" stroke-width="1" opacity=".35"/>
+            <!-- 眉（への字に食い込む太い段差） -->
+            <path d="M25 36.5 L36 35.5 L40 38.5 L44 35.5 L55 36.5 L55 40 L44 38.8 L40 41.5 L36 38.8 L25 40 Z" fill="#0f0a38" opacity=".8"/>
+            <!-- 目（横長台形・白シアン発光・眉の直下） -->
+            <polygon points="26.5,41 36,40.2 36,44.6 28.5,45" fill="#CFF4FF" filter="url(#eyeGlow)" style="animation:eye-glow 2.2s ease-in-out infinite"/>
+            <polygon points="44,40.2 53.5,41 51.5,45 44,44.6" fill="#CFF4FF" filter="url(#eyeGlow)" style="animation:eye-glow 2.2s ease-in-out infinite"/>
+            <!-- 頬から口を囲うライン（左右） -->
+            <path d="M28 47 L31 56 L34 58.5" stroke="#0f0a38" stroke-width="1.6" opacity=".6" fill="none"/>
+            <path d="M52 47 L49 56 L46 58.5" stroke="#0f0a38" stroke-width="1.6" opacity=".6" fill="none"/>
+            <!-- 鼻の影 -->
+            <path d="M38 47.5 L40 50 L42 47.5" stroke="#0f0a38" stroke-width="1.2" opacity=".45" fill="none"/>
+            <!-- 口（横に広い薄スリット） -->
+            <rect x="33" y="58" width="14" height="2.4" rx="1" fill="#38BDF8" opacity=".45"/>
+            <!-- あごの分割ライン（口角から外へ・あご横線） -->
+            <path d="M33 61 L30 66.5" stroke="#0f0a38" stroke-width="1.4" opacity=".55" fill="none"/>
+            <path d="M47 61 L50 66.5" stroke="#0f0a38" stroke-width="1.4" opacity=".55" fill="none"/>
+            <path d="M33 64.5 L47 64.5" stroke="#38BDF8" stroke-width=".7" opacity=".3" fill="none"/>
           </svg>
         </div>
         <div class="atlas-title">
           <div class="name">ATLAS</div>
-          <div class="subtitle mincho" style="font-size:12px;margin-top:4px;color:rgba(148,163,184,.85)">AI経営参謀 アトラス</div>
+          <div class="subtitle mincho" style="font-size:12px;margin-top:4px;color:rgba(148,163,184,.85)">AIアシスタント</div>
         </div>
         <button class="regen-btn" onclick="regenComments()" style="margin-left:auto">ATLASに再分析させる</button>
       </div>
