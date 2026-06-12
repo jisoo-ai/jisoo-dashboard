@@ -19,21 +19,21 @@
 /* ===== リセット・基本 ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0A0E17;
-  --card:#111A2E;
-  --card-border:rgba(124,140,255,.18);
-  --cyan:#38BDF8;
-  --violet:#8B5CF6;
-  --cyan-dim:rgba(56,189,248,.12);
-  --violet-dim:rgba(139,92,246,.12);
-  --text:#E2E8F0;
+  --bg:#120B0D;
+  --card:#1C1216;
+  --card-border:rgba(245,184,61,.18);
+  --cyan:#F5B83D;
+  --violet:#E0312E;
+  --cyan-dim:rgba(245,184,61,.12);
+  --violet-dim:rgba(224,49,46,.12);
+  --text:#F4ECE2;
   --text-muted:#64748B;
-  --text-dim:#94A3B8;
+  --text-dim:#B8A99A;
   --red:#F87171;
   --radius:14px;
-  --grad:linear-gradient(135deg,var(--cyan),var(--violet));
-  --glow-cyan:0 0 18px rgba(56,189,248,.35);
-  --glow-violet:0 0 18px rgba(139,92,246,.35);
+  --grad:linear-gradient(135deg,var(--violet),var(--cyan));
+  --glow-cyan:0 0 18px rgba(245,184,61,.35);
+  --glow-violet:0 0 18px rgba(224,49,46,.35);
 }
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.001ms!important;transition-duration:.001ms!important}
@@ -52,12 +52,12 @@ body::before,body::after{
 }
 body::before{
   width:520px;height:520px;
-  background:radial-gradient(circle,var(--cyan) 0%,transparent 70%);
+  background:radial-gradient(circle,rgba(245,184,61,1) 0%,transparent 70%);
   top:-120px;left:-120px;
 }
 body::after{
   width:600px;height:600px;
-  background:radial-gradient(circle,var(--violet) 0%,transparent 70%);
+  background:radial-gradient(circle,rgba(224,49,46,1) 0%,transparent 70%);
   bottom:-160px;right:-160px;
 }
 
@@ -68,8 +68,8 @@ body::after{
 /* ===== DEMOバッジ ===== */
 #demoBadge{
   display:none;position:fixed;top:12px;right:12px;z-index:999;
-  background:linear-gradient(90deg,var(--cyan),var(--violet));
-  color:#0A0E17;font-size:11px;font-weight:800;letter-spacing:.18em;
+  background:linear-gradient(90deg,var(--violet),var(--cyan));
+  color:#120B0D;font-size:11px;font-weight:800;letter-spacing:.18em;
   padding:4px 12px;border-radius:20px;
 }
 
@@ -77,7 +77,7 @@ body::after{
 #loginView{min-height:100vh;align-items:center;justify-content:center}
 #loginView.active{display:flex}
 .login-card{
-  background:rgba(17,26,46,.85);backdrop-filter:blur(20px);
+  background:rgba(28,18,22,.85);backdrop-filter:blur(20px);
   border:1px solid var(--card-border);border-radius:20px;
   box-shadow:0 8px 48px rgba(0,0,0,.5);
   padding:44px 40px;width:100%;max-width:400px;
@@ -93,13 +93,13 @@ body::after{
 .form-group input{
   width:100%;padding:11px 14px;
   background:rgba(255,255,255,.04);
-  border:1.5px solid rgba(124,140,255,.25);border-radius:10px;
+  border:1.5px solid rgba(245,184,61,.25);border-radius:10px;
   font-size:15px;color:var(--text);outline:none;
   transition:border-color .2s,box-shadow .2s;
 }
 .form-group input:focus{
   border-color:var(--cyan);
-  box-shadow:0 0 0 3px rgba(56,189,248,.18);
+  box-shadow:0 0 0 3px rgba(245,184,61,.18);
 }
 .form-group input::placeholder{color:var(--text-muted)}
 .btn-primary{
@@ -115,7 +115,7 @@ body::after{
 /* ===== ダッシュボードヘッダー ===== */
 #dashView{padding-bottom:48px}
 .hdr{
-  background:rgba(10,14,23,.9);backdrop-filter:blur(16px);
+  background:rgba(18,11,13,.9);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--card-border);
   padding:13px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
   position:sticky;top:0;z-index:100;
@@ -132,15 +132,15 @@ body::after{
   font-size:13px;color:var(--text);outline:none;
   font-family:inherit;
 }
-.month-sel option{background:#111A2E;color:var(--text)}
+.month-sel option{background:#1C1216;color:var(--text)}
 .btn-sm{
   padding:6px 14px;border:1.5px solid var(--cyan);border-radius:8px;
   font-size:12px;font-weight:600;color:var(--cyan);background:transparent;
   transition:all .2s;white-space:nowrap;letter-spacing:.02em;
 }
-.btn-sm:hover{background:var(--cyan);color:#0A0E17}
+.btn-sm:hover{background:var(--cyan);color:#120B0D}
 .btn-sm.outline-red{border-color:var(--red);color:var(--red)}
-.btn-sm.outline-red:hover{background:var(--red);color:#0A0E17}
+.btn-sm.outline-red:hover{background:var(--red);color:#120B0D}
 .btn-sm.filled{background:var(--grad);border-color:transparent;color:#fff}
 .btn-sm.filled:hover{opacity:.85}
 
@@ -160,7 +160,7 @@ body::after{
   border-radius:var(--radius);padding:20px 22px;
   transition:box-shadow .25s;
 }
-.card:hover{box-shadow:0 0 24px rgba(56,189,248,.12)}
+.card:hover{box-shadow:0 0 24px rgba(245,184,61,.12)}
 
 /* ===== サマリーグリッド ===== */
 .summary-grid{
@@ -173,7 +173,7 @@ body::after{
   transition:box-shadow .25s;opacity:0;transform:translateY(14px);
 }
 .summary-card.visible{opacity:1;transform:translateY(0);transition:opacity .4s ease,transform .4s ease,box-shadow .25s}
-.summary-card:hover{box-shadow:0 0 24px rgba(56,189,248,.12)}
+.summary-card:hover{box-shadow:0 0 24px rgba(245,184,61,.12)}
 .summary-card .micro-label{
   font-size:11px;font-weight:700;color:var(--cyan);
   text-transform:uppercase;letter-spacing:.18em;margin-bottom:2px;
@@ -204,7 +204,7 @@ body::after{
 .atlas-orb{
   width:80px;height:80px;flex-shrink:0;
   animation:atlas-float 3.6s ease-in-out infinite;
-  filter:drop-shadow(0 0 10px rgba(56,189,248,.5)) drop-shadow(0 0 22px rgba(139,92,246,.3));
+  filter:drop-shadow(0 0 10px rgba(245,184,61,.5)) drop-shadow(0 0 22px rgba(224,49,46,.3));
 }
 @keyframes atlas-float{
   0%,100%{transform:translateY(0)}
@@ -225,7 +225,7 @@ body::after{
 .atlas-title .subtitle{font-size:11px;color:var(--text-muted);letter-spacing:.08em;margin-top:2px}
 /* ATLASコメント吹き出し */
 .atlas-bubble{
-  background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.2);
+  background:rgba(245,184,61,.06);border:1px solid rgba(245,184,61,.2);
   border-radius:12px;padding:16px 18px;margin-bottom:16px;
   font-size:14px;color:var(--text);line-height:1.8;min-height:60px;
   white-space:pre-wrap;word-break:break-all;
@@ -233,7 +233,7 @@ body::after{
 .atlas-bubble .preparing-dots{color:var(--cyan)}
 .atlas-sub-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .atlas-sub-panel{
-  background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.2);
+  background:rgba(224,49,46,.07);border:1px solid rgba(224,49,46,.2);
   border-radius:10px;padding:14px 16px;
 }
 .atlas-sub-panel .micro-label{
@@ -246,13 +246,13 @@ body::after{
   font-size:12px;font-weight:600;color:var(--cyan);background:transparent;
   transition:all .2s;
 }
-.regen-btn:hover{background:var(--cyan);color:#0A0E17}
+.regen-btn:hover{background:var(--cyan);color:#120B0D}
 /* FORECASTバッジ */
 .badge{
   display:inline-block;padding:4px 12px;border-radius:20px;
-  border:1px solid rgba(56,189,248,.4);color:var(--cyan);
+  border:1px solid rgba(245,184,61,.4);color:var(--cyan);
   font-weight:700;font-size:13px;margin-bottom:6px;margin-right:6px;
-  background:rgba(56,189,248,.08);
+  background:rgba(245,184,61,.08);
 }
 .ai-note{font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic}
 .preparing{color:var(--text-muted);font-size:13px}
@@ -271,24 +271,24 @@ body::after{
   font-size:13px;font-variant-numeric:tabular-nums;
 }
 .metrics-table th{
-  background:rgba(56,189,248,.08);color:var(--cyan);
+  background:rgba(245,184,61,.08);color:var(--cyan);
   padding:10px 14px;text-align:right;font-weight:600;white-space:nowrap;
   border-bottom:1px solid var(--card-border);font-size:12px;letter-spacing:.04em;
 }
 .metrics-table th:first-child{text-align:left}
 .metrics-table td{
-  padding:9px 14px;border-bottom:1px solid rgba(124,140,255,.08);
+  padding:9px 14px;border-bottom:1px solid rgba(245,184,61,.08);
   text-align:right;white-space:nowrap;color:var(--text-dim);
 }
 .metrics-table td:first-child{text-align:left;font-weight:600;color:var(--text)}
 .metrics-table tr:last-child td{border-bottom:none}
-.metrics-table tr:hover td{background:rgba(56,189,248,.04)}
+.metrics-table tr:hover td{background:rgba(245,184,61,.04)}
 .calc-col{color:var(--cyan);font-weight:600}
 
 /* ===== 入力フォームビュー ===== */
 #formView{min-height:100vh;padding-bottom:48px}
 .form-hdr{
-  background:rgba(10,14,23,.9);backdrop-filter:blur(16px);
+  background:rgba(18,11,13,.9);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--card-border);
   padding:13px 22px;display:flex;align-items:center;gap:12px;
 }
@@ -309,13 +309,13 @@ body::after{
 .form-row input,.form-row textarea,.form-row select{
   width:100%;padding:11px 14px;
   background:rgba(255,255,255,.04);
-  border:1.5px solid rgba(124,140,255,.25);border-radius:10px;
+  border:1.5px solid rgba(245,184,61,.25);border-radius:10px;
   font-size:15px;font-family:inherit;color:var(--text);outline:none;
   transition:border-color .2s,box-shadow .2s;
   min-height:44px;
 }
 .form-row input:focus,.form-row textarea:focus,.form-row select:focus{
-  border-color:var(--cyan);box-shadow:0 0 0 3px rgba(56,189,248,.15);
+  border-color:var(--cyan);box-shadow:0 0 0 3px rgba(245,184,61,.15);
 }
 .form-row input::placeholder,.form-row textarea::placeholder{color:var(--text-muted)}
 .form-row textarea{resize:vertical;min-height:88px}
@@ -329,7 +329,7 @@ body::after{
 /* トースト */
 .toast{
   position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);
-  background:rgba(17,26,46,.95);border:1px solid var(--cyan);
+  background:rgba(28,18,22,.95);border:1px solid var(--cyan);
   border-radius:10px;padding:10px 22px;
   font-size:13px;font-weight:600;color:var(--cyan);
   opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;z-index:9999;
@@ -341,7 +341,7 @@ body::after{
 /* ===== 面談レポートビュー ===== */
 #reportView{min-height:100vh;padding-bottom:48px}
 .report-hdr{
-  background:rgba(10,14,23,.9);backdrop-filter:blur(16px);
+  background:rgba(18,11,13,.9);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--card-border);
   padding:13px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
 }
@@ -367,7 +367,7 @@ body::after{
 .report-content table th,.report-content table td{
   border:1px solid var(--card-border);padding:7px 11px;text-align:left;color:var(--text-dim);
 }
-.report-content table th{background:rgba(56,189,248,.08);color:var(--cyan);font-weight:600}
+.report-content table th{background:rgba(245,184,61,.08);color:var(--cyan);font-weight:600}
 .report-content strong{font-weight:700;color:var(--text)}
 .report-generated{font-size:11px;color:var(--text-muted);margin-top:20px;text-align:right}
 .report-generating{text-align:center;padding:48px;color:var(--text-muted);font-size:14px}
@@ -375,7 +375,7 @@ body::after{
 /* ===== スピナー ===== */
 .spinner{
   display:inline-block;width:16px;height:16px;
-  border:2px solid rgba(56,189,248,.25);border-top-color:var(--cyan);
+  border:2px solid rgba(245,184,61,.25);border-top-color:var(--cyan);
   border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -458,7 +458,7 @@ body::after{
   <div class="main">
 
     <!-- サマリーカード -->
-    <div class="section-title">MONTHLY SUMMARY <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(56,189,248,.7)">月次サマリー</span></div>
+    <div class="section-title">MONTHLY SUMMARY <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(245,184,61,.7)">月次サマリー</span></div>
     <div class="summary-grid">
       <div class="summary-card" id="sc0">
         <div class="micro-label">Monthly Revenue</div>
@@ -489,7 +489,7 @@ body::after{
     </div>
 
     <!-- ATLASゾーン -->
-    <div class="section-title">AI EXECUTIVE BRIEFING <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(56,189,248,.7)">AI経営ブリーフィング</span></div>
+    <div class="section-title">AI EXECUTIVE BRIEFING <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(245,184,61,.7)">AI経営ブリーフィング</span></div>
     <div class="atlas-zone">
       <div class="atlas-header">
         <!-- SVGヒーローアーマー顔アバター -->
@@ -497,14 +497,14 @@ body::after{
           <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="helmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#2b1d7a"/>
-                <stop offset="55%" stop-color="#1a1060"/>
-                <stop offset="100%" stop-color="#0f0a38"/>
+                <stop offset="0%" stop-color="#C22A26"/>
+                <stop offset="55%" stop-color="#8E1713"/>
+                <stop offset="100%" stop-color="#5E0E0B"/>
               </linearGradient>
               <linearGradient id="plateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#7c6cf0"/>
-                <stop offset="45%" stop-color="#5b4ad6"/>
-                <stop offset="100%" stop-color="#33288f"/>
+                <stop offset="0%" stop-color="#F7C75C"/>
+                <stop offset="45%" stop-color="#D99A26"/>
+                <stop offset="100%" stop-color="#A8741A"/>
               </linearGradient>
               <filter id="eyeGlow" x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="2.5" result="blur"/>
@@ -512,32 +512,32 @@ body::after{
               </filter>
             </defs>
             <!-- ヘルメット外殻（平らめの頭頂・四角いあご） -->
-            <path d="M40 8 C54 8 62 16 63 28 L63 38 C63 50 61 58 57 64 C53 70 47 73 40 73 C33 73 27 70 23 64 C19 58 17 50 17 38 L17 28 C18 16 26 8 40 8 Z" fill="url(#helmGrad)" stroke="#38BDF8" stroke-width="1.3" opacity=".95"/>
+            <path d="M40 8 C54 8 62 16 63 28 L63 38 C63 50 61 58 57 64 C53 70 47 73 40 73 C33 73 27 70 23 64 C19 58 17 50 17 38 L17 28 C18 16 26 8 40 8 Z" fill="url(#helmGrad)" stroke="#F5B83D" stroke-width="1.3" opacity=".95"/>
             <!-- 耳ディスク -->
-            <circle cx="19" cy="40" r="3.8" fill="#1a1060" stroke="#38BDF8" stroke-width="1" opacity=".9"/>
-            <circle cx="61" cy="40" r="3.8" fill="#1a1060" stroke="#38BDF8" stroke-width="1" opacity=".9"/>
-            <circle cx="19" cy="40" r="1.4" fill="#8B5CF6"/>
-            <circle cx="61" cy="40" r="1.4" fill="#8B5CF6"/>
+            <circle cx="19" cy="40" r="3.8" fill="#6E1210" stroke="#F5B83D" stroke-width="1" opacity=".9"/>
+            <circle cx="61" cy="40" r="3.8" fill="#6E1210" stroke="#F5B83D" stroke-width="1" opacity=".9"/>
+            <circle cx="19" cy="40" r="1.4" fill="#F5B83D"/>
+            <circle cx="61" cy="40" r="1.4" fill="#F5B83D"/>
             <!-- フェイスプレート（こめかみの切れ込み・四角いあご） -->
-            <path d="M40 13 C49 13 56 18 57 26 L57 33 L54 35.5 L56 43 C56 52 53 60 48 65 L44 68 L36 68 L32 65 C27 60 24 52 24 43 L26 35.5 L23 33 L23 26 C24 18 31 13 40 13 Z" fill="url(#plateGrad)" stroke="#8B5CF6" stroke-width=".8" opacity=".97"/>
+            <path d="M40 13 C49 13 56 18 57 26 L57 33 L54 35.5 L56 43 C56 52 53 60 48 65 L44 68 L36 68 L32 65 C27 60 24 52 24 43 L26 35.5 L23 33 L23 26 C24 18 31 13 40 13 Z" fill="url(#plateGrad)" stroke="#FFD56A" stroke-width=".8" opacity=".97"/>
             <!-- 頭頂センターライン -->
-            <line x1="40" y1="8" x2="40" y2="13" stroke="#8B5CF6" stroke-width="1" opacity=".35"/>
+            <line x1="40" y1="8" x2="40" y2="13" stroke="#FFD56A" stroke-width="1" opacity=".35"/>
             <!-- 眉（への字に食い込む太い段差） -->
-            <path d="M25 36.5 L36 35.5 L40 38.5 L44 35.5 L55 36.5 L55 40 L44 38.8 L40 41.5 L36 38.8 L25 40 Z" fill="#0f0a38" opacity=".8"/>
+            <path d="M25 36.5 L36 35.5 L40 38.5 L44 35.5 L55 36.5 L55 40 L44 38.8 L40 41.5 L36 38.8 L25 40 Z" fill="#4A0E0B" opacity=".8"/>
             <!-- 目（横長台形・白シアン発光・眉の直下） -->
-            <polygon points="26.5,41 36,40.2 36,44.6 28.5,45" fill="#CFF4FF" filter="url(#eyeGlow)" style="animation:eye-glow 2.2s ease-in-out infinite"/>
-            <polygon points="44,40.2 53.5,41 51.5,45 44,44.6" fill="#CFF4FF" filter="url(#eyeGlow)" style="animation:eye-glow 2.2s ease-in-out infinite"/>
+            <polygon points="26.5,41 36,40.2 36,44.6 28.5,45" fill="#DFF4FF" filter="url(#eyeGlow)" style="animation:eye-glow 2.2s ease-in-out infinite"/>
+            <polygon points="44,40.2 53.5,41 51.5,45 44,44.6" fill="#DFF4FF" filter="url(#eyeGlow)" style="animation:eye-glow 2.2s ease-in-out infinite"/>
             <!-- 頬から口を囲うライン（左右） -->
-            <path d="M28 47 L31 56 L34 58.5" stroke="#0f0a38" stroke-width="1.6" opacity=".6" fill="none"/>
-            <path d="M52 47 L49 56 L46 58.5" stroke="#0f0a38" stroke-width="1.6" opacity=".6" fill="none"/>
+            <path d="M28 47 L31 56 L34 58.5" stroke="#4A0E0B" stroke-width="1.6" opacity=".6" fill="none"/>
+            <path d="M52 47 L49 56 L46 58.5" stroke="#4A0E0B" stroke-width="1.6" opacity=".6" fill="none"/>
             <!-- 鼻の影 -->
-            <path d="M38 47.5 L40 50 L42 47.5" stroke="#0f0a38" stroke-width="1.2" opacity=".45" fill="none"/>
+            <path d="M38 47.5 L40 50 L42 47.5" stroke="#4A0E0B" stroke-width="1.2" opacity=".45" fill="none"/>
             <!-- 口（横に広い薄スリット） -->
-            <rect x="33" y="58" width="14" height="2.4" rx="1" fill="#38BDF8" opacity=".45"/>
+            <rect x="33" y="58" width="14" height="2.4" rx="1" fill="#DFF4FF" opacity=".45"/>
             <!-- あごの分割ライン（口角から外へ・あご横線） -->
-            <path d="M33 61 L30 66.5" stroke="#0f0a38" stroke-width="1.4" opacity=".55" fill="none"/>
-            <path d="M47 61 L50 66.5" stroke="#0f0a38" stroke-width="1.4" opacity=".55" fill="none"/>
-            <path d="M33 64.5 L47 64.5" stroke="#38BDF8" stroke-width=".7" opacity=".3" fill="none"/>
+            <path d="M33 61 L30 66.5" stroke="#4A0E0B" stroke-width="1.4" opacity=".55" fill="none"/>
+            <path d="M47 61 L50 66.5" stroke="#4A0E0B" stroke-width="1.4" opacity=".55" fill="none"/>
+            <path d="M33 64.5 L47 64.5" stroke="#F5B83D" stroke-width=".7" opacity=".3" fill="none"/>
           </svg>
         </div>
         <div class="atlas-title">
@@ -553,24 +553,24 @@ body::after{
       <!-- M&AWatchとForecast -->
       <div class="atlas-sub-grid">
         <div class="atlas-sub-panel">
-          <div class="micro-label">M&amp;A WATCH <span class="mincho" style="font-size:10px;letter-spacing:.04em;text-transform:none;color:rgba(139,92,246,.7)">M&amp;A観察</span></div>
+          <div class="micro-label">M&amp;A WATCH <span class="mincho" style="font-size:10px;letter-spacing:.04em;text-transform:none;color:rgba(224,49,46,.7)">M&amp;A観察</span></div>
           <div class="body mincho" id="aiMaWatch"><span class="preparing">準備中…</span></div>
         </div>
         <div class="atlas-sub-panel">
-          <div class="micro-label">FORECAST <span class="mincho" style="font-size:10px;letter-spacing:.04em;text-transform:none;color:rgba(139,92,246,.7)">目標到達予測</span></div>
+          <div class="micro-label">FORECAST <span class="mincho" style="font-size:10px;letter-spacing:.04em;text-transform:none;color:rgba(224,49,46,.7)">目標到達予測</span></div>
           <div class="body" id="aiForecast"><span class="preparing">計算中…</span></div>
         </div>
       </div>
     </div>
 
     <!-- 利益グラフ -->
-    <div class="section-title">PROFIT TREND <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(56,189,248,.7)">利益の推移</span></div>
+    <div class="section-title">PROFIT TREND <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(245,184,61,.7)">利益の推移</span></div>
     <div class="chart-card">
       <canvas id="profitChart"></canvas>
     </div>
 
     <!-- 月次一覧表 -->
-    <div class="section-title">MONTHLY OVERVIEW <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(56,189,248,.7)">月次一覧</span></div>
+    <div class="section-title">MONTHLY OVERVIEW <span class="mincho" style="font-size:13px;letter-spacing:.06em;text-transform:none;color:rgba(245,184,61,.7)">月次一覧</span></div>
     <div class="table-wrap">
       <table class="metrics-table" id="metricsTable">
         <thead id="metricsHead"></thead>
@@ -1026,14 +1026,14 @@ function renderChart(){
   var ctx=document.getElementById("profitChart").getContext("2d");
   if(profitChartInst){ profitChartInst.destroy(); }
 
-  /* 棒グラデーション：シアン系 */
+  /* 棒グラデーション：ゴールド系（請求額） */
   var gradBilling = ctx.createLinearGradient(0,0,0,240);
-  gradBilling.addColorStop(0,"rgba(56,189,248,.55)");
-  gradBilling.addColorStop(1,"rgba(56,189,248,.08)");
-  /* 棒グラデーション：紫系 */
+  gradBilling.addColorStop(0,"rgba(245,184,61,.55)");
+  gradBilling.addColorStop(1,"rgba(245,184,61,.08)");
+  /* 棒グラデーション：赤系（入金額） */
   var gradPayment = ctx.createLinearGradient(0,0,0,240);
-  gradPayment.addColorStop(0,"rgba(139,92,246,.55)");
-  gradPayment.addColorStop(1,"rgba(139,92,246,.08)");
+  gradPayment.addColorStop(0,"rgba(224,49,46,.55)");
+  gradPayment.addColorStop(1,"rgba(224,49,46,.08)");
 
   profitChartInst = new Chart(ctx, {
     data:{
@@ -1044,7 +1044,7 @@ function renderChart(){
           label:"請求額",
           data: billingData,
           backgroundColor: gradBilling,
-          borderColor: "rgba(56,189,248,.8)",
+          borderColor: "rgba(245,184,61,.8)",
           borderWidth: 1.5,
           borderRadius: 5,
           order: 2
@@ -1054,7 +1054,7 @@ function renderChart(){
           label:"入金額",
           data: paymentData,
           backgroundColor: gradPayment,
-          borderColor: "rgba(139,92,246,.8)",
+          borderColor: "rgba(224,49,46,.8)",
           borderWidth: 1.5,
           borderRadius: 5,
           order: 3
@@ -1063,11 +1063,11 @@ function renderChart(){
           type:"line",
           label:"利益",
           data: profitData,
-          borderColor: "#38BDF8",
+          borderColor: "#FFD56A",
           backgroundColor: "transparent",
           borderWidth: 2.5,
           pointBackgroundColor: "#fff",
-          pointBorderColor: "#38BDF8",
+          pointBorderColor: "#FFD56A",
           pointBorderWidth: 2,
           pointRadius: 6,
           tension: .35,
@@ -1091,18 +1091,18 @@ function renderChart(){
         legend:{
           display: true,
           labels:{
-            color: "#94A3B8",
+            color: "#B8A99A",
             font:{ family:"'Shippori Mincho',serif", size:12 },
             usePointStyle: true,
             pointStyleWidth: 10
           }
         },
         tooltip:{
-          backgroundColor:"rgba(17,26,46,.95)",
-          borderColor:"rgba(56,189,248,.3)",
+          backgroundColor:"rgba(28,18,22,.95)",
+          borderColor:"rgba(245,184,61,.3)",
           borderWidth:1,
-          titleColor:"#38BDF8",
-          bodyColor:"#E2E8F0",
+          titleColor:"#F5B83D",
+          bodyColor:"#F4ECE2",
           callbacks:{
             label:function(c){
               var v = c.parsed.y;
