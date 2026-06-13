@@ -23,6 +23,16 @@ test("deploy workflow: CI tools are pinned and not floating latest versions", ()
   assert.match(workflow, /version:\s*2\.106\.0\b/);
 });
 
+test("quality gate workflow: every push runs checks without deploying", () => {
+  const workflow = read(".github/workflows/quality-gate.yml");
+  assert.match(workflow, /name:\s*Quality Gate/);
+  assert.match(workflow, /branches:\s*\[main\]/);
+  assert.match(workflow, /node-version:\s*22/);
+  assert.match(workflow, /deno-version:\s*2\.8\.3/);
+  assert.match(workflow, /npm run check/);
+  assert.doesNotMatch(workflow, /supabase functions deploy/i);
+});
+
 test("config: public config keeps placeholders and does not contain live secrets", () => {
   const config = read("config.js");
   assert.match(config, /SUPABASE_URL:\s*"__SUPABASE_URL__"/);
